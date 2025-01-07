@@ -1,0 +1,46 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.adminCommand(\"ping\").ok' || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      with:
+        php-version: '8.3'
+        extensions: mongodb, pdo_sqlite
+        ini-values: |
+          post_max_size=256M
+          upload_max_filesize=256M
+        coverage: none
+    - uses: actions/checkout@v3
+    - name: Copy .env
+      run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Generate key
+      run: php artisan key:generate --env=testing
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+    - name: Run Migrations
+      run: php artisan migrate --env=testing
+    - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
+      run: php artisan test
