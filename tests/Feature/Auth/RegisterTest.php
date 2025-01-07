@@ -84,6 +84,8 @@ class RegisterTest extends TestCase
     {
         User::factory()->create(['email' => 'tallstack@example.com']);
 
+        // dd(User::get()->toArray());
+
         Livewire::test('auth.register')
             ->set('email', 'tallstack@example.com')
             ->call('register')

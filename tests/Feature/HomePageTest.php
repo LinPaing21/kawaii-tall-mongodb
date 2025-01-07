@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class HomePageTest extends TestCase
 {
     /**
      * A basic test example.
@@ -13,6 +13,6 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->get(route('home'))->assertSuccessful();
+        $this->get(route('home'))->assertSuccessful()->assertSeeText(config('app.name'));
     }
 }
