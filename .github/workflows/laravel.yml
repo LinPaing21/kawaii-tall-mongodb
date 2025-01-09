@@ -8,39 +8,85 @@ on:
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
 
     services:
-      mongodb:
+      mongo-primary:
         image: mongo:5.0
         ports:
           - 27017:27017
         options: >-
+          --replSet rs0
+          --bind_ip localhost,mongo-primary
+          --health-cmd="mongosh --eval 'db.adminCommand(\"ping\").ok' || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      mongo-secondary:
+        image: mongo:5.0
+        ports:
+          - 27018:27017
+        options: >-
+          --replSet rs0
+          --bind_ip localhost,mongo-secondary
+          --health-cmd="mongosh --eval 'db.adminCommand(\"ping\").ok' || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      mongo-arbiter:
+        image: mongo:5.0
+        ports:
+          - 27019:27017
+        options: >-
+          --replSet rs0
+          --bind_ip localhost,mongo-arbiter
           --health-cmd="mongosh --eval 'db.adminCommand(\"ping\").ok' || exit 1"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+    - uses: actions/checkout@v3
+
+    - uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
-        extensions: mongodb, pdo_sqlite
+        extensions: mongodb
         ini-values: |
           post_max_size=256M
           upload_max_filesize=256M
         coverage: none
-    - uses: actions/checkout@v3
-    - name: Copy .env
-      run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
+
+    - name: Wait for MongoDB Services to Start
+      run: sleep 15
+
+    - name: Initialize MongoDB Replica Set
+      run: |
+        echo 'rs.initiate({
+          _id: "rs0",
+          members: [
+            { _id: 0, host: "mongo-primary:27017" },
+            { _id: 1, host: "mongo-secondary:27017" },
+            { _id: 2, host: "mongo-arbiter:27017", arbiterOnly: true }
+          ]
+        })' | mongosh --host mongo-primary
+
+    - name: Copy .env.testing
+      run: cp .env.example .env.testing
+
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Generate key
+      run: composer install --prefer-dist --no-ansi --no-progress --no-interaction
+
+    - name: Generate App Key
       run: php artisan key:generate --env=testing
+
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
+
     - name: Run Migrations
       run: php artisan migrate --env=testing
-    - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
+
+    - name: Run Tests
       run: php artisan test
