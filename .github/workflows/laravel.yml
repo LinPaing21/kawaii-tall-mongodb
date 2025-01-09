@@ -1,5 +1,4 @@
-name: Laravel CI with MongoDB Replica Set
-
+name: Laravel CI/CD
 on:
   push:
     branches: ["main"]
@@ -8,44 +7,47 @@ on:
 
 jobs:
   laravel-tests:
-runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-steps:
-  - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-    with:
-      php-version: "8.3"
-      extensions: mongodb, pdo_sqlite
-      ini-values: |
-        post_max_size=256M
-        upload_max_filesize=256M
-      coverage: none
+    steps:
+      - uses: actions/checkout@v3
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v3
-    with:
-      node-version: "22"
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: "8.3"
+          extensions: mongodb, pdo_sqlite
+          ini-values: |
+            post_max_size=256M
+            upload_max_filesize=256M
 
-  - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
 
-  - name: Copy .env
-    run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
+      - name: Copy .env
+        run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
 
-  - name: Install Dependencies
-    run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Install Composer Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-  - name: Install Node.js Dependencies && Build Frontend Assets
-    run: npm install && npm run build
+      - name: Install Node.js Dependencies & Build Frontend Assets
+        run: |
+          npm install
+          npm run build
 
-  - name: Generate key
-    run: php artisan key:generate --env=testing
+      - name: Generate Application Key
+        run: php artisan key:generate --env=testing
 
-  - name: Directory Permissions
-    run: chmod -R 777 storage bootstrap/cache
+      - name: Set Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
 
-  - name: Run Migrations
-    env: DB_URI= ${{ secrets.CONNECTION_STRING }}
-    run: php artisan migrate --env=testing
+      - name: Run Database Migrations
+        env:
+          DB_URI: ${{ secrets.CONNECTION_STRING }}
+        run: php artisan migrate --env=testing
 
-  - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
-    env: DB_URI= ${{ secrets.CONNECTION_STRING }}
-    run: php artisan test --env=testing
+      - name: Execute Tests (Unit and Feature tests)
+        env:
+          DB_URI: ${{ secrets.CONNECTION_STRING }}
+        run: php artisan test --env=testing
