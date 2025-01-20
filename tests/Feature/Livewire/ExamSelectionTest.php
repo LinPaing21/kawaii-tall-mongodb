@@ -49,7 +49,7 @@ class ExamSelectionTest extends TestCase
         Livewire::test(ExamSelection::class)
             ->assertStatus(200)
             ->assertViewHas('exams', function ($collection) use ($exams) {
-                return !$collection->contains($exams->last());
+                return !$collection->contains($exams->sortByDesc('year')->last());
             });
     }
 
