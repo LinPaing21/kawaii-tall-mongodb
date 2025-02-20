@@ -26,7 +26,9 @@
             @foreach ($exams as $exam)
                 <div class="rounded-lg border bg-white py-7 px-4 bg-card text-card-foreground shadow-sm cursor-pointer transition-all"
                     x-bind:class="{ 'ring-2 ring-red-600': '{{ $exam->id }}' == '{{ $selectedExam?->id }}' }"
-                    wire:click="setSelectedExam('{{ $exam->id }}')">
+                    @dblclick="window.location = '{{ route("exam-participate", ["exam"=>$exam->id]) }}'"
+                    wire:click="setSelectedExam('{{ $exam->id }}')"
+                    >
                     <div class="header">
                         <h3 class="text-2xl font-bold text-center mb-4">{{ $exam->level }}</h3>
                         <p class="description text-center mb-4">{{ $exam->year->format('F Y') }}</p>
@@ -62,11 +64,11 @@
 
                     <span>Lessons</span>
                 </button>
-                <button class="h-24 flex flex-col items-center justify-center space-y-2">
+                <a href="{{ route('exam-participate', ['exam' => $selectedExam->id])}}" class="h-24 flex flex-col items-center justify-center space-y-2" wire:navigate>
                     <i class="fa-solid fa-file-lines h-8 w-8 text-secondary"></i>
 
                     <span>Practice Tests</span>
-                </button>
+                </a>
                 <button class="h-24 flex flex-col items-center justify-center space-y-2">
                     <i class="fa-solid fa-signal h-8 w-8 text-secondary"></i>
 

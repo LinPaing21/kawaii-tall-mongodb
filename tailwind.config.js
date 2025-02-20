@@ -3,6 +3,9 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
     theme: {
         extend: {
+            screens: {
+                xs: { max: "639px" }, // Applies to screens *below* 640px
+            },
             fontFamily: {
                 sans: ["Inter var", ...defaultTheme.fontFamily.sans],
             },

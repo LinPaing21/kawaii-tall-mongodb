@@ -23,7 +23,7 @@ class ExamSelectionTest extends TestCase
 
     public function test_page_does_not_contain_exam_data()
     {
-        $response = $this->get('/exam-selection');
+        $response = $this->get('/exams');
 
         $response->assertSuccessful();
         $response->assertSee('No Results Found!');

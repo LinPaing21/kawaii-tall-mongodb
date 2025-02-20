@@ -1,9 +1,11 @@
 <?php
 
 use App\Livewire\Auth\Login;
+use App\Livewire\ExamResult;
 use App\Livewire\Auth\Verify;
 use App\Livewire\Auth\Register;
 use App\Livewire\ExamSelection;
+use App\Livewire\ExamParticipate;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
@@ -23,8 +25,9 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 */
 
 Route::view('/', 'welcome')->name('home');
-Route::get('exam-selection', ExamSelection::class)->name('exam-selection');
-
+Route::get('exams', ExamSelection::class)->name('exam-selection');
+Route::get('exams/{exam}', ExamParticipate::class)->name('exam-participate');
+Route::get('results/{result}', ExamResult::class)->name('exam-result');
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');

@@ -1,67 +1,109 @@
-<header class="px-4 lg:px-6 h-16 flex items-center bg-white border-b border-red-100">
-    <a class="flex items-center justify-center" href="#">
-        <i class="fa-solid fa-book-open h-6 w-6 text-red-600"></i>
-        <span class="ml-2 font-bold text-gray-800">{{ config('app.name') }}</span>
-    </a>
-    <nav class="ml-auto flex gap-4 sm:gap-6 items-center">
-        <a class="text-sm font-medium hover:text-red-600 transition-colors" href="#">
-            About JLPT
-        </a>
-        <a class="text-sm font-medium hover:text-red-600 transition-colors" href="#">
-            Resources
-        </a>
-        <a class="text-sm font-medium hover:text-red-600 transition-colors" href="#">
-            Contact
-        </a>
-        @if (Route::has('login'))
-            @auth
-                <div x-data="{ 'isOpen': false }">
-                    <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
-                        x-bind:class="{ 'ring-primary ring-2 ring-offset-2': isOpen }" id="menu-button" aria-expanded="true"
-                        aria-haspopup="true" @click="isOpen = !isOpen">
+@props([
+    'examParticipate' => false,
+])
 
-                        <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=0D8ABC&color=fff"
-                            alt="{{ auth()->user()->name }}" />
-                    </div>
-                    <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
-                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75 transform"
-                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
-                        role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                        <div class="py-1" role="none">
-                            <!-- Active: "bg-gray-100 text-gray-900 outline-none", Not Active: "text-gray-700" -->
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-900 hover:outline-none"
-                                x-binding:class="{'bg-gray-100 text-gray-900 outline-none': isOpen}" role="menuitem"
-                                tabindex="-1" id="menu-item-0">Account settings</a>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-900 hover:outline-none""
-                                x-binding:class="{'bg-gray-100 text-gray-900 outline-none': isOpen}" role="menuitem"
-                                tabindex="-1" id="menu-item-1">Support</a>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-900 hover:outline-none""
-                                x-binding:class="{'bg-gray-100 text-gray-900 outline-none': isOpen}" role="menuitem"
-                                tabindex="-1" id="menu-item-2">License</a>
-                            <form method="POST" action="#" role="none">
-                                <button type="submit"
-                                    class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-200 hover:text-gray-900 hover:outline-none""
-                                    x-binding:class="{'bg-gray-100 text-gray-900 outline-none': isOpen}" role="menuitem"
-                                    tabindex="-1" id="menu-item-3">Sign out</button>
-                            </form>
+<nav class="bg-white border-b border-red-100 dark:bg-gray-900">
+    <div class="flex flex-wrap items-center justify-between px-4 py-4 lg:px-6">
+        <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse grow">
+            <i class="fa-solid fa-book-open text-2xl text-red-600 dark:text-red-400"></i>
+            <span
+                class="self-center text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-white">{{ config('app.name') }}</span>
+        </a>
+
+        @if ($examParticipate)
+            <div class="ml-auto flex items-center space-x-4">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span id="countdown" class="w-16">2:00:00</span>
+                <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    id="submitAnswersBtn">
+                    Submit
+                </button>
+            </div>
+        @else
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                @if (Route::has('login'))
+                    @auth
+                        <button type="button"
+                            class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                            id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                            data-dropdown-placement="bottom">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full"
+                                src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=0D8ABC&color=fff"
+                                alt="{{ auth()->user()->name }}">
+                        </button>
+                        <!-- Dropdown menu -->
+                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                            id="user-dropdown">
+                            <div class="px-4 py-3">
+                                <span class="block text-sm text-gray-900 dark:text-white">{{ auth()->user()->name }}</span>
+                                <span
+                                    class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ auth()->user()->email }}</span>
+                            </div>
+                            <ul class="py-2" aria-labelledby="user-menu-button">
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Account
+                                        settings</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Support</a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">License</a>
+                                </li>
+                                <li>
+                                    <form method="POST" action="#">
+                                        @csrf
+                                        <button type="submit"
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
+                                            out</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-            @else
-                <a href="{{ route('login') }}"
-                    class="text-sm font-medium hover:text-red-600 transition-colors border-l border-gray-400 px-3">Sign
-                    in</a>
-
-                {{-- @if (Route::has('register'))
-                    <a href="{{ route('register') }}"
-                        class="text-sm font-medium hover:text-red-600 transition-colors">Register</a>
-                @endif --}}
-            @endauth
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="text-sm text-blue-500 font-medium hover:text-red-600 transition-colors border-r md:border-r-0 md:border-l border-gray-400 px-3">
+                            Sign in</a>
+                    @endauth
+                @endif
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 me-5" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li class="border-b md:border-0">
+                        <a href="#"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About
+                            JLPT</a>
+                    </li>
+                    <li class="border-b md:border-0">
+                        <a href="#"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Resources</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                    </li>
+                </ul>
+            </div>
         @endif
-    </nav>
-</header>
+    </div>
+</nav>

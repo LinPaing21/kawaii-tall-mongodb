@@ -29,7 +29,7 @@
                     Your JLPT Level</h2>
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-5" x-data="{ levels: ['N5', 'N4', 'N3', 'N2', 'N1'] }">
                     <template x-for="level in ['N5', 'N4', 'N3', 'N2', 'N1']" :key="level">
-                        <a x-bind:href="'/exam-selection?selectedLevel=' +
+                        <a x-bind:href="'/exams?selectedLevel=' +
                         level" x-text="level"
                             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background hover:text-accent-foreground px-4 py-2 h-32 text-2xl font-bold border-2 border-red-200 hover:border-red-600 hover:bg-red-50 transition-colors">
                         </a>
