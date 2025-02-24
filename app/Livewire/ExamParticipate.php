@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Exam;
 use App\Models\Result;
 use Livewire\Component;
+use app\Services\ResultService;
 
 class ExamParticipate extends Component
 {
@@ -13,6 +14,13 @@ class ExamParticipate extends Component
     public $selectedSection;
 
     public $examSelections = [];
+
+    public function boot(
+        ResultService $resultService,
+    ) {
+        $this->resultService = $resultService;
+    }
+
 
     public function mount()
     {
@@ -45,8 +53,9 @@ class ExamParticipate extends Component
 
     public function selectAnswer($title, $qIndex, $answer)
     {
-        $this->examSelections->transform(function($item, $key) use ($title, $qIndex, $answer) {
-            if($item['title'] == $title) $item['answers'][$qIndex] = $answer;
+        $this->examSelections->transform(function ($item, $key) use ($title, $qIndex, $answer) {
+            if ($item['title'] == $title)
+                $item['answers'][$qIndex] = $answer;
 
             return $item;
         });
@@ -54,32 +63,17 @@ class ExamParticipate extends Component
 
     public function submit()
     {
-        $sections = collect($this->exam->exam_sections);
+        try {
+            $result = $this->resultService->saveResult($this->exam, $this->examSelections);
+        } catch (\Throwable $th) {
+            \Log::error($th->getMessage());
 
-        $this->examSelections->transform(function($item, $key) use($sections) {
-            $item['score'] = 0;
-            $i = 0;
-
-            $section = $sections->firstWhere('id', $item['id']);
-            foreach ($section['problems'] as $problem) {
-                foreach ($problem['questions'] as $q) {
-                    if($item['answers'][$i] == '-') {
-                        $i++;
-                        continue;
-                    }
-                    if($q['options'][$item['answers'][$i]-1]['is_correct']) $item['score'] += 1;
-                    $i++;
-                }
-            }
-
-            return $item;
-        });
-
-        $result = Result::create([
-            "exam_id" => $this->exam->id,
-            "user_id" => auth()->user()?->id ?? 'test_user',
-            "results" => $this->examSelections->toArray()
-        ]);
+             // Your logic for saving data
+            return $this->dispatch('show-submit-error', [
+                'type' => 'Error',  // Can be 'success', 'error', 'warning', etc.
+                'message' => 'Something went wrong while saving data!',
+            ]);
+        }
 
         $this->redirect(route('exam-result', ['result' => $result->id]));
     }

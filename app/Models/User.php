@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'email_verified_at',
     ];
 
     /**
@@ -56,6 +57,10 @@ class User extends Authenticatable
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function ($user) {
+            if(!isset($user->role)) $user->role = 'user';
+        });
 
         static::deleting(function($user) {
             $user->results()->delete();

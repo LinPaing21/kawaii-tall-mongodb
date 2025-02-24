@@ -80,6 +80,7 @@
                         </button>
                     </span>
                 </div>
+                <x-o-auth />
             </form>
         </div>
     </div>

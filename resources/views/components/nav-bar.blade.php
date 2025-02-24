@@ -4,7 +4,7 @@
 
 <nav class="bg-white border-b border-red-100 dark:bg-gray-900">
     <div class="flex flex-wrap items-center justify-between px-4 py-4 lg:px-6">
-        <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse grow">
+        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse grow">
             <i class="fa-solid fa-book-open text-2xl text-red-600 dark:text-red-400"></i>
             <span
                 class="self-center text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-white">{{ config('app.name') }}</span>
@@ -18,7 +18,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span id="countdown" class="w-16">2:00:00</span>
+                <span id="countdown" class="w-16">00:00:00</span>
                 <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     id="submitAnswersBtn">
                     Submit
@@ -60,7 +60,7 @@
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">License</a>
                                 </li>
                                 <li>
-                                    <form method="POST" action="#">
+                                    <form method="POST" action="{{route('logout')}}">
                                         @csrf
                                         <button type="submit"
                                             class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign

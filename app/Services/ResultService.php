@@ -1,7 +1,9 @@
 <?php
 namespace app\Services;
 
+use App\Models\Exam;
 use App\Models\Result;
+use Illuminate\Support\Collection;
 use app\Repositories\ResultRepository;
 
 class ResultService
@@ -108,5 +110,37 @@ class ResultService
 
             return $isPass;
         }
+    }
+
+    public function saveResult(Exam $exam, Collection $examSelections)
+    {
+        $sections = collect($exam->exam_sections);
+
+        $examSelections->transform(function($item, $key) use($sections) {
+            $item['score'] = 0;
+            $i = 0;
+
+            $section = $sections->firstWhere('id', $item['id']);
+            foreach ($section['problems'] as $problem) {
+                foreach ($problem['questions'] as $q) {
+                    if($item['answers'][$i] == '-') {
+                        $i++;
+                        continue;
+                    }
+                    if($q['options'][$item['answers'][$i]-1]['is_correct']) $item['score'] += 1;
+                    $i++;
+                }
+            }
+
+            return $item;
+        });
+
+        $data = [
+            "exam_id" => $exam->id,
+            "user_id" => auth()->user()?->id ?? 'test_user',
+            "results" => $examSelections->toArray()
+        ];
+
+        return $this->resultRepo->create($data);
     }
 }

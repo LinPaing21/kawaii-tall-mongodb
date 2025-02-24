@@ -77,7 +77,7 @@
             </button>
         </div>
 
-        <x-scroll-area class="!flex-1 !overflow-y-auto p-6 pb-0" :id="'content-scrollable'">
+        <x-scroll-area class="!flex-1 !overflow-y-auto p-6 pb-0 pt-0 lg:pt-6 " :id="'content-scrollable'">
             <div class="max-w-4xl mx-auto bg-gray-100 p-5">
                 <h1 class="text-2xl font-bold mb-4 text-center">{{ $selectedSection['title'] }}</h1>
                 <h2 class="text-xl font-bold text-center">{{ $selectedSection['minutes'] }} Minutes</h2>
@@ -166,6 +166,14 @@
                         @endphp
                     @endforeach
                 @endforeach
+                {{-- <div class="flex justify-between">
+                    <button x-on:click="navigateToPreviousQuestion()" class="px-4 py-1 bg-primary text-white rounded-lg hover:bg-blue-400">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </button>
+                    <button x-on:click="navigateToNextQuestion()" class="px-4 py-1 bg-primary text-white rounded-lg hover:bg-blue-400">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </button>
+                </div> --}}
             </div>
             <button x-on:click="document.querySelector('#content-scrollable').scrollTo({ top: 0, behavior: 'smooth' })"
                 class="fixed bottom-4 right-4 w-10 h-10  bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
@@ -226,6 +234,15 @@
                 }
             });
         })
+
+        $wire.on('show-submit-error', (event) => {
+            Swal.fire({
+                icon: event[0].type.toLowerCase(), // 'success', 'error', 'warning'
+                title: event[0].type,
+                text: event[0].message,
+                confirmButtonText: 'OK'
+            });
+        });
     </script>
 @endscript
 
@@ -233,7 +250,7 @@
     @vite('resources/js/audio.js')
 
     <script>
-        let duration = {{ collect($exam->exam_sections)->sum('minutes') }} * 60; // 2 hours in seconds
+        var duration = {{ collect($exam->exam_sections)->sum('minutes') }} * 60; // 2 hours in seconds
 
         document.addEventListener('DOMContentLoaded', function() {
             let countdownElement = document.getElementById("countdown");
@@ -255,8 +272,6 @@
             }
 
             let timer = setInterval(updateTimer, 1000);
-
-
         });
 
         function updateExamDuration(minutes) {

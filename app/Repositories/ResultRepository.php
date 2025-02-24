@@ -13,4 +13,9 @@ class ResultRepository
     {
         return $this->resultModel->find($id);
     }
+
+    public function create(array $data)
+    {
+        return $this->resultModel->create($data);
+    }
 }
