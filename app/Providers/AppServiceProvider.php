@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use Filament\Support\Colors\Color;
+use MongoDB\Laravel\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Filament\Support\Facades\FilamentColor;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +24,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Model::unguard();
+
+
+        FilamentColor::register([
+            'danger' => Color::Red,
+            'gray' => Color::Zinc,
+            'info' => Color::Blue,
+            'primary' => Color::Amber,
+            'success' => Color::Green,
+            'warning' => Color::Amber,
+        ]);
     }
 }

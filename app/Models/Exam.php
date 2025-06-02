@@ -14,7 +14,14 @@ class Exam extends Model
     protected $connection = 'mongodb';
     protected $collection = 'exams';
 
-    protected $guard = [];
+    protected $fillable = [
+        'name',
+        'level',
+        'year',
+        'description',
+        'audio_url',
+        'exam_sections',
+    ];
 
     /**
      * Get the attributes that should be cast.

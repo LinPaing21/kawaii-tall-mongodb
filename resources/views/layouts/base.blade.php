@@ -21,6 +21,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @livewireStyles
     @livewireScripts
+    @filamentStyles
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -32,5 +33,6 @@
     @yield('body')
 </body>
 
+@filamentScripts
 @stack('after-scripts')
 </html>

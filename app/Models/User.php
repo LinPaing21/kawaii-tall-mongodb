@@ -4,11 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Result;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Notifications\Notifiable;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -65,5 +66,15 @@ class User extends Authenticatable
         static::deleting(function($user) {
             $user->results()->delete();
         });
+    }
+
+    public function hasRole(string $role)
+    {
+        return $this->role === $role;
+    }
+
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return $this->role === 'admin';
     }
 }

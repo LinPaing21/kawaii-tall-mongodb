@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Result;
 use Livewire\Component;
-use app\Services\ResultService;
+use App\Services\ResultService;
 
 class ExamResult extends Component
 {

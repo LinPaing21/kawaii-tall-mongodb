@@ -83,7 +83,7 @@
                 <h2 class="text-xl font-bold text-center">{{ $selectedSection['minutes'] }} Minutes</h2>
 
                 @if ($selectedSection['id'] == 'listening')
-                    <div x-init="initAudio('{{ $exam->audio_file }}');
+                    <div x-init="initAudio('{{ $exam->audio_url }}');
                     updateExamDuration({{ $selectedSection['minutes'] }})" :class="{ 'hidden': '{{ $selectedSection['id'] }}' != 'listening' }">
                         <div class="flex items-center gap-4 mt-3">
                             <button @click="playAudio()"

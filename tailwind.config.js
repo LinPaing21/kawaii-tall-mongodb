@@ -32,6 +32,8 @@ module.exports = {
         "./resources/**/*.vue",
         "./resources/**/*.twig",
         "./node_modules/flowbite/**/*.js",
+        './resources/views/**/*.blade.php',
+        './vendor/filament/**/*.blade.php'
     ],
     plugins: [
         require("@tailwindcss/forms"),

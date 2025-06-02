@@ -1,5 +1,5 @@
 <?php
-namespace app\Services;
+namespace App\Services;
 
 use App\Models\Exam;
 use App\Models\Result;
@@ -66,7 +66,7 @@ class ResultService
     {
         $results = collect($result->results);
         $level = $result->exam->level;
-        if($level == 'N5' || $level == 'N4') {
+        if ($level == 'N5' || $level == 'N4') {
 
             $result1 = $results->firstWhere('id', 'vocabulary');
             $result2 = $results->firstWhere('id', 'grammar');
@@ -75,26 +75,26 @@ class ResultService
             $lkTotalPoints = 0;
             $lsnTotalPoints = 0;
 
-            if($result1 && !$result2 && !$result3) {
+            if ($result1 && !$result2 && !$result3) {
                 $lkTotalPoints = count($result1["answers"]) > 0 ? floor(($result1["score"] / count($result1["answers"])) * 60) : 0;
                 return $lkTotalPoints >= 19;
             }
 
-            if($result2 && !$result1 && !$result3) {
+            if ($result2 && !$result1 && !$result3) {
                 if (count($result2["answers"]) > 0) {
                     $lkTotalPoints += floor(($result2["score"] / count($result2["answers"])) * 60);
                 }
                 return $lkTotalPoints >= 19;
             }
 
-            if($result3 && !$result1 && !$result2) {
+            if ($result3 && !$result1 && !$result2) {
                 $lsnTotalPoints = count($result3["answers"]) > 0 ? floor(($result3["score"] / count($result3["answers"])) * 60) : 0;
                 return $lsnTotalPoints >= 19;
             }
 
-            if($result1 && $result2 && $result3) {
+            if ($result1 && $result2 && $result3) {
                 $lkTotalPoints = (count($result1["answers"]) > 0 ? floor(($result1["score"] / count($result1["answers"])) * 60) : 0) +
-                                 (count($result2["answers"]) > 0 ? floor(($result2["score"] / count($result2["answers"])) * 60) : 0);
+                    (count($result2["answers"]) > 0 ? floor(($result2["score"] / count($result2["answers"])) * 60) : 0);
                 $lsnTotalPoints = count($result3["answers"]) > 0 ? floor(($result3["score"] / count($result3["answers"])) * 60) : 0;
                 return $lkTotalPoints >= 38 && $lsnTotalPoints >= 19;
             }
@@ -102,10 +102,11 @@ class ResultService
             return false;
         } else {
             $isPass = false;
-            $results->each(function ($result) use(&$isPass) {
+            $results->each(function ($result) use (&$isPass) {
                 $isPass = floor(($result["score"] / count($result["answers"])) * 60) >= 39;
 
-                if(!$isPass) return $isPass;
+                if (!$isPass)
+                    return $isPass;
             });
 
             return $isPass;
@@ -116,18 +117,19 @@ class ResultService
     {
         $sections = collect($exam->exam_sections);
 
-        $examSelections->transform(function($item, $key) use($sections) {
+        $examSelections->transform(function ($item, $key) use ($sections) {
             $item['score'] = 0;
             $i = 0;
 
             $section = $sections->firstWhere('id', $item['id']);
             foreach ($section['problems'] as $problem) {
                 foreach ($problem['questions'] as $q) {
-                    if($item['answers'][$i] == '-') {
+                    if ($item['answers'][$i] == '-') {
                         $i++;
                         continue;
                     }
-                    if($q['options'][$item['answers'][$i]-1]['is_correct']) $item['score'] += 1;
+                    if ($q['options'][$item['answers'][$i] - 1]['is_correct'])
+                        $item['score'] += 1;
                     $i++;
                 }
             }
@@ -142,5 +144,25 @@ class ResultService
         ];
 
         return $this->resultRepo->create($data);
+    }
+
+    public function getDataForResultDetail($result)
+    {
+        $exam = $result->exam;
+        $sections = collect($exam->exam_sections);
+
+        $examResults = collect($result->results)->map(function ($item) use ($sections) {
+            $section = $sections->firstWhere('id', $item['id']);
+            $i = 0;
+            foreach ($section['problems'] as $index => $problem) {
+                foreach ($problem['questions'] as $k => $q) {
+                    // $q['selected'] = $item['answers'][$i++];
+                    \Arr::set($section, 'problems.' . $index . '.questions.' . $k . '.selected', $item['answers'][$i++]);
+                }
+            }
+            return $section;
+        });
+
+        return $examResults;
     }
 }

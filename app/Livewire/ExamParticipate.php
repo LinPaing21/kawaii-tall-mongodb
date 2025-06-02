@@ -51,10 +51,10 @@ class ExamParticipate extends Component
         $this->selectedSection = $this->exam->exam_sections[$index];
     }
 
-    public function selectAnswer($title, $qIndex, $answer)
+    public function selectAnswer($id, $qIndex, $answer)
     {
-        $this->examSelections->transform(function ($item, $key) use ($title, $qIndex, $answer) {
-            if ($item['title'] == $title)
+        $this->examSelections->transform(function ($item, $key) use ($id, $qIndex, $answer) {
+            if ($item['id'] == $id)
                 $item['answers'][$qIndex] = $answer;
 
             return $item;

@@ -1,7 +1,7 @@
 @props(['selections'])
 
 <div
-    class="p-4 bg-white dark:bg-gray-800 border-t border-r border-gray-200 dark:border-gray-700 rounded-tr-lg shadow-lg">
+    class="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
     <div class="space-y-4 max-w-[320px]">
         @foreach ($selections as $sectionIndex => $section)
             <div>

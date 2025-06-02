@@ -39,6 +39,10 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID', ''),
         'client_secret' => env('GOOGLE_CLIENT_SECRET', ''),
         'redirect' => env('GOOGLE_REDIRECT_URL')
+    ],
+
+    'lambda' => [
+        'url' => env('AWS_LAMBDA_URL', 'https://hmp3z3c27yx2d5wpzfuxc2xyni0fbemv.lambda-url.ap-southeast-1.on.aws/')
     ]
 
 ];
