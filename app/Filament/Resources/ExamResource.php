@@ -51,7 +51,7 @@ class ExamResource extends Resource
                     ->label('Description'),
                 FileUpload::make('audio_file')
                     ->label('Audio File')
-                    ->required()
+                    ->required(fn (string $context): bool => $context === 'create')
                     ->directory('JLPT/audio')
                     ->preserveFilenames()
                     ->acceptedFileTypes(['audio/mpeg', 'audio/mp3'])

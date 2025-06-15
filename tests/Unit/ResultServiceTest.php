@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Exam;
 use App\Models\Result;
-use app\Services\ResultService;
+use App\Services\ResultService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use app\Repositories\ResultRepository;

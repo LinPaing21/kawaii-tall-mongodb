@@ -20,6 +20,8 @@ class ExamResult extends Component
     public $passMark = 0;
     public $isPass = false;
 
+    public $showShareMessage = false;
+
     public function boot(
        ResultService $resultService,
     ) {
@@ -41,5 +43,15 @@ class ExamResult extends Component
     public function render()
     {
         return view('livewire.exam-result');
+    }
+
+    public function share()
+    {
+        $this->showShareMessage = true;
+    }
+
+    public function viewDetailResult()
+    {
+        return redirect(route('exam-result-detail', $this->result->id));
     }
 }

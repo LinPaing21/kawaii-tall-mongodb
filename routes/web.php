@@ -7,6 +7,7 @@ use App\Livewire\Auth\Verify;
 use App\Livewire\Auth\Register;
 use App\Livewire\ExamSelection;
 use App\Livewire\ExamParticipate;
+use App\Livewire\ResultDetail;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
@@ -29,6 +30,7 @@ Route::view('/', 'welcome')->name('home');
 Route::get('exams', ExamSelection::class)->name('exam-selection');
 Route::get('exams/{exam}', ExamParticipate::class)->name('exam-participate');
 Route::get('results/{result}', ExamResult::class)->name('exam-result');
+Route::get('results/{result}/detail', ResultDetail::class)->name('exam-result-detail');
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');

@@ -2,7 +2,7 @@
     'examParticipate' => false,
 ])
 
-<nav class="bg-white border-b border-red-100 dark:bg-gray-900">
+<nav class="sticky top-0 z-50 bg-white border-b border-red-100 dark:bg-gray-900">
     <div class="flex flex-wrap items-center justify-between px-4 py-4 lg:px-6">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse grow">
             <i class="fa-solid fa-book-open text-2xl text-red-600 dark:text-red-400"></i>

@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\Exam;
 use App\Models\Result;
 use Livewire\Component;
-use app\Services\ResultService;
+use App\Services\ResultService;
 
 class ExamParticipate extends Component
 {

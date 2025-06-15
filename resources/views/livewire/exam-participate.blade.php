@@ -38,6 +38,7 @@
             icons: {
                 'vocabulary': `<i class='w-10 h-10 fa-solid fa-book-open'></i>`,
                 'grammar': `<i class='w-10 h-10 fa-solid fa-pen-nib'></i>`,
+                'grammar_reading': `<i class='w-10 h-10 fa-solid fa-pen-nib'></i>`,
                 'reading': `<i class='w-10 h-10 fa-regular fa-file-line'></i>`,
                 'listening': `<i class='w-10 h-10 fa-solid fa-headphones'></i>`,
             },
@@ -51,14 +52,13 @@
                         <button
                             class="inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full justify-start "
                             :class="{
-                                'bg-red-100 text-red-600': '{{ $selectedSection['id'] }}'
-                                === '{{ $section['id'] }}'
-                            }"
-                            x-on:click="
-                                document.querySelector('#content-scrollable').scrollTo({ top: 0 });
+                                    'bg-red-100 text-red-600': '{{ $selectedSection['id'] }}'
+                                    === '{{ $section['id'] }}'
+                                }" x-on:click="
+                                    document.querySelector('#content-scrollable').scrollTo({ top: 0 });
 
-                                $wire.selectSection({{ $index }})
-                            ">
+                                    $wire.selectSection({{ $index }})
+                                ">
                             <span x-html="icons.{{ $section['id'] }}"></span>
                             <span class="ml-2">{{ $section['title'] }}</span>
                         </button>
@@ -84,28 +84,29 @@
 
                 @if ($selectedSection['id'] == 'listening')
                     <div x-init="initAudio('{{ $exam->audio_url }}');
-                    updateExamDuration({{ $selectedSection['minutes'] }})" :class="{ 'hidden': '{{ $selectedSection['id'] }}' != 'listening' }">
+                        updateExamDuration({{ $selectedSection['minutes'] }})"
+                        :class="{ 'hidden': '{{ $selectedSection['id'] }}' != 'listening' }">
                         <div class="flex items-center gap-4 mt-3">
                             <button @click="playAudio()"
                                 class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                                 ▶ Start
                             </button>
                             {{-- <button @click="pauseAudio()"
-                            class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                            ⏸ Pause
-                        </button>
-                        <button @click="stopAudio()"
-                            class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-                            ⏹ Stop
-                        </button> --}}
+                                class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                                ⏸ Pause
+                            </button>
+                            <button @click="stopAudio()"
+                                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                ⏹ Stop
+                            </button> --}}
                         </div>
 
                         <div class="flex items-center gap-2 mt-3">
                             <span id="currentTime" class="text-gray-700 text-sm w-10">0:00</span>
-                            {{-- <input id="progressBar" type="range" min="0" max="100" value="0"
-                            step="0.1" class="w-full cursor-pointer accent-green-500" onchange="seekAudio(event)"> --}}
-                            <input id="progressBar" type="range" min="0" max="100" value="0"
-                                step="0.1" class="w-full cursor-not-allowed accent-green-500" readonly>
+                            {{-- <input id="progressBar" type="range" min="0" max="100" value="0" step="0.1"
+                                class="w-full cursor-pointer text-green-500" onchange="seekAudio(event)"> --}}
+                            <input id="progressBar" type="range" min="0" max="100" value="0" step="0.1"
+                                class="w-full cursor-not-allowed text-green-500" readonly>
                             <span id="duration" class="text-gray-700 text-sm w-12">0:00</span>
                         </div>
                     </div>
@@ -154,7 +155,7 @@
                                 @foreach ($question['options'] as $option)
                                     <button
                                         class="w-full text-left px-4 py-2 bg-white rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200"
-                                        wire:click="selectAnswer('{{ $selectedSection['title'] }}',{{ $qIndex }}, {{ $option['no'] }})"
+                                        wire:click="selectAnswer('{{ $selectedSection['id'] }}',{{ $qIndex }}, {{ $option['no'] }})"
                                         :class="{ 'bg-blue-100 outline-none ring-2 ring-blue-500 ring-opacity-50': '{{ $examSelections->where('title', $selectedSection['title'])->first()['answers'][$qIndex] == $option['no'] }}' }">
                                         {{ $option['no'] . '.  ' . $option['body'] }}
                                     </button>
@@ -167,115 +168,162 @@
                     @endforeach
                 @endforeach
                 {{-- <div class="flex justify-between">
-                    <button x-on:click="navigateToPreviousQuestion()" class="px-4 py-1 bg-primary text-white rounded-lg hover:bg-blue-400">
+                    <button x-on:click="navigateToPreviousQuestion()"
+                        class="px-4 py-1 bg-primary text-white rounded-lg hover:bg-blue-400">
                         <i class="fa-solid fa-angles-left"></i>
                     </button>
-                    <button x-on:click="navigateToNextQuestion()" class="px-4 py-1 bg-primary text-white rounded-lg hover:bg-blue-400">
+                    <button x-on:click="navigateToNextQuestion()"
+                        class="px-4 py-1 bg-primary text-white rounded-lg hover:bg-blue-400">
                         <i class="fa-solid fa-angles-right"></i>
                     </button>
                 </div> --}}
             </div>
-            <button x-on:click="document.querySelector('#content-scrollable').scrollTo({ top: 0, behavior: 'smooth' })"
-                class="fixed bottom-4 right-4 w-10 h-10  bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                <i class="fa-solid fa-arrow-up"></i>
-            </button>
+
+            <x-utilities.scroll-up-button scrollableId="content-scrollable" />
         </x-scroll-area>
     </main>
 </div>
 
 @script
-    <script>
-        document.querySelectorAll('[data-section][data-question]').forEach(button => {
-            button.addEventListener('click', function() {
-                const section = this.dataset.section;
-                const question = this.dataset.question;
-                // You can customize this to match your navigation needs
-                navigateToQuestion(section, question);
-            });
+<script>
+    document.querySelectorAll('[data-section][data-question]').forEach(button => {
+        button.addEventListener('click', function () {
+            const section = this.dataset.section;
+            const question = this.dataset.question;
+            // You can customize this to match your navigation needs
+            navigateToQuestion(section, question);
         });
+    });
 
-        async function navigateToQuestion(section, question) {
-            let index;
+    async function navigateToQuestion(section, question) {
+        let index;
 
-            ([index, section] = section.split(','));
+        ([index, section] = section.split(','));
 
-            console.log(section + "==" + $wire.selectedSection['id'])
-            if (section == $wire.selectedSection['id']) {
-                const questionElement = document.querySelector(`#${section}-${question}`); //scroll based navigation
-                questionElement?.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            } else {
-                console.log(`index: ${index}`);
+        console.log(section + "==" + $wire.selectedSection['id'])
+        if (section == $wire.selectedSection['id']) {
+            const questionElement = document.querySelector(`#${section}-${question}`); //scroll based navigation
+            questionElement?.scrollIntoView({
+                behavior: 'smooth'
+            });
+        } else {
+            console.log(`index: ${index}`);
 
-                await $wire.selectSection(index);
+            await $wire.selectSection(index);
 
-                console.log('here')
-                const questionElement = document.querySelector(`#${section}-${question}`); //scroll based navigation
-                questionElement?.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
+            console.log('here')
+            const questionElement = document.querySelector(`#${section}-${question}`); //scroll based navigation
+            questionElement?.scrollIntoView({
+                behavior: 'smooth'
+            });
         }
+    }
 
-        document.querySelector('#submitAnswersBtn').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to change your answers after submitting!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $wire.submit();
-                }
-            });
-        })
-
-        $wire.on('show-submit-error', (event) => {
-            Swal.fire({
-                icon: event[0].type.toLowerCase(), // 'success', 'error', 'warning'
-                title: event[0].type,
-                text: event[0].message,
-                confirmButtonText: 'OK'
-            });
+    document.querySelector('#submitAnswersBtn').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to change your answers after submitting!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $wire.submit();
+            }
         });
-    </script>
+    })
+
+    $wire.on('timeup', () => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Time is up!',
+            text: 'Your exam will be submitted automatically.',
+            showConfirmButton: false,
+            timer: 2000
+        }).then(() => {
+            $wire.submit();
+        });
+    });
+
+    $wire.on('show-submit-error', (event) => {
+        Swal.fire({
+            icon: event[0].type.toLowerCase(), // 'success', 'error', 'warning'
+            title: event[0].type,
+            text: event[0].message,
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
 @endscript
 
 @push('after-scripts')
     @vite('resources/js/audio.js')
 
-    <script>
-        var duration = {{ collect($exam->exam_sections)->sum('minutes') }} * 60; // 2 hours in seconds
+    {{--
+    <script defer>
+        var duration = {{ collect($exam -> exam_sections) -> sum('minutes') }} * 60; // 2 hours in seconds
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let countdownElement = document.getElementById("countdown");
+        let countdownElement = document.getElementById("countdown");
 
-            function updateTimer() {
-                let hours = Math.floor(duration / 3600);
-                let minutes = Math.floor((duration % 3600) / 60);
-                let seconds = duration % 60;
+        let timer = setInterval(updateTimer, 1000);
 
-                countdownElement.textContent =
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        function updateTimer() {
+            let hours = Math.floor(duration / 3600);
+            let minutes = Math.floor((duration % 3600) / 60);
+            let seconds = duration % 60;
 
-                if (duration > 0) {
-                    duration--;
-                } else {
-                    clearInterval(timer);
-                    alert("Time is up! The exam has ended.");
-                }
+            countdownElement.textContent =
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (duration > 0) {
+                duration--;
+            } else {
+                clearInterval(timer);
+                alert("Time is up! The exam has ended.");
+                Livewire.dispatch('timeup');
             }
-
-            let timer = setInterval(updateTimer, 1000);
-        });
+        }
 
         function updateExamDuration(minutes) {
             duration = minutes * 60;
         }
+    </script> --}}
+    <script defer>
+        // Convert to let since it can be modified
+        let duration = {{ collect($exam->exam_sections)->sum('minutes') }} * 60;
+        const countdownElement = document.getElementById("countdown");
+        let timer;
+
+        function updateTimer() {
+            const hours = Math.floor(duration / 3600);
+            const minutes = Math.floor((duration % 3600) / 60);
+            const seconds = duration % 60;
+
+            // Guard clause in case element is not found
+            if (!countdownElement) return;
+
+            countdownElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (duration > 0) {
+                duration--;
+            } else {
+                clearInterval(timer);
+                // Remove alert since you already have SweetAlert
+                Livewire.dispatch('timeup');
+            }
+        }
+
+        function updateExamDuration(minutes) {
+            duration = minutes * 60;
+            // Reset timer when duration is updated
+            clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        // Start timer
+        timer = setInterval(updateTimer, 1000);
     </script>
 @endpush

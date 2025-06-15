@@ -19,15 +19,16 @@ class EditExam extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
+            // Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
         ];
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $this->data['audio_url'] ??= Storage::disk('s3')->url(reset($this->data['audio_file']));
-        dd($this->data);
-        return $this->data;
+        if (!empty($this->data['audio_file'])) {
+            $this->data['audio_url'] = Storage::disk('s3')->url(reset($this->data['audio_file']));
+        }
+        return \Arr::except($this->data, ['id', 'created_at', 'updated_at', 'audio_file']);
     }
 }

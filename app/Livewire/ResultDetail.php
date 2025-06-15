@@ -7,16 +7,15 @@ use Livewire\Component;
 
 class ResultDetail extends Component
 {
-    public $result;
+    public ?Result $result;
     public $examResults;
 
-    public function mount($resultId)
+    public function mount($resultId = null)
     {
-        $this->result = Result::find($resultId);
+        $this->result ??= Result::find($resultId);
         if (!$this->result) {
             abort(404, 'Result not found');
         }
-
         $this->examResults = app(\App\Services\ResultService::class)->getDataForResultDetail($this->result);
     }
 

@@ -1,0 +1,43 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: kawaii-app
+        volumes:
+            - .:/var/www
+        ports:
+            - "9000:9000"
+            - "5173:5173"
+        depends_on:
+            - mongodb
+        networks:
+            - kawaii-network
+
+    nginx:
+        image: nginx:alpine
+        container_name: kawaii-nginx
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+        depends_on:
+            - app
+        networks:
+            - kawaii-network
+
+    mongodb:
+        image: mongodb/mongodb-community-server:6.0-ubi8
+        container_name: kawaii-mongodb
+        command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+        volumes:
+            - ./data:/data/db
+        ports:
+            - "27017:27017"
+        networks:
+            - kawaii-network
+
+networks:
+    kawaii-network:
+        driver: bridge
