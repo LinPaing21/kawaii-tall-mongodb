@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install zip pdo pdo_mysql  mbstring gd intl
 
 # Install Mongo Extension
-RUN pecl install mongodb-1.20.0 \
+RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 
 # Install Node.js 22 from NodeSource
