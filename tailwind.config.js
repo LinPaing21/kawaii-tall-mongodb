@@ -14,6 +14,9 @@ module.exports = {
                 secondary: "#E74C3C",
                 tertiary: "#1ABC9C",
             },
+            backgroundImage: {
+                'tori-gate': "url('/assets/images/japan-wallpaper.jpg')",
+            },
         },
     },
     variants: {

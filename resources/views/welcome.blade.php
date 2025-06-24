@@ -3,7 +3,7 @@
 @section('content')
     <main class="flex-1">
         <section
-            class="w-full 2xl:w-4/5 2xl:mx-auto 2xl:rounded-b-lg py-12 md:py-24 lg:py-32 bg-[url('{{ config('app.url') }}/assets/images/japan-wallpaper.jpg')] bg-cover bg-center">
+            class="w-full 2xl:w-4/5 2xl:mx-auto 2xl:rounded-b-lg py-12 md:py-24 lg:py-32 bg-tori-gate bg-cover bg-center">
             <div class="container px-4 md:px-6 mx-auto">
                 <div class="flex flex-col items-center space-y-4 text-center">
                     <div class="space-y-2 text-white drop-shadow-[0_3px_3px_rgba(44,62,80,0.75)] animate-fade-in">
