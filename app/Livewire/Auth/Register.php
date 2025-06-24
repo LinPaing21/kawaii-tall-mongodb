@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 
 class Register extends Component
 {
@@ -23,6 +24,14 @@ class Register extends Component
     /** @var string */
     public $passwordConfirmation = '';
 
+    public function mount()
+    {
+        $autoGenerateName = @explode('@', request()->input('email', ''))[0] ?? '';
+        $this->fill([
+            'name' =>  ucfirst($autoGenerateName),
+            'email' => request()->input('email', ''),
+        ]);
+    }
     public function register()
     {
         $this->validate([

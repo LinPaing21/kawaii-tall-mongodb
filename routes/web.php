@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\GoogleAuthController;
 use App\Livewire\Auth\Login;
 use App\Livewire\ExamResult;
 use App\Livewire\Auth\Verify;
+use App\Livewire\ResultDetail;
 use App\Livewire\Auth\Register;
 use App\Livewire\ExamSelection;
+use App\Livewire\ResultHistory;
 use App\Livewire\ExamParticipate;
-use App\Livewire\ResultDetail;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
 use App\Livewire\Auth\Passwords\Confirm;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 
@@ -29,6 +30,7 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 Route::view('/', 'welcome')->name('home');
 Route::get('exams', ExamSelection::class)->name('exam-selection');
 Route::get('exams/{exam}', ExamParticipate::class)->name('exam-participate');
+Route::get('results', ResultHistory::class)->middleware('auth')->name('exam-results');
 Route::get('results/{result}', ExamResult::class)->name('exam-result');
 Route::get('results/{result}/detail', ResultDetail::class)->name('exam-result-detail');
 Route::middleware('guest')->group(function () {

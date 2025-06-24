@@ -17,18 +17,15 @@
     </svg>
 </button>
 
-<script>
-    // Add this to your resources/js/audio.js or create a new JS file
-    document.addEventListener('DOMContentLoaded', function() {
-        const scrollable = document.getElementById('{{$scrollableId}}');
-        const scrollButton = document.getElementById('scroll-up-button'); // Adjust selector as needed
+<script defer>
+    const scrollable = document.getElementById('{{$scrollableId}}');
+    const scrollButton = document.getElementById('scroll-up-button');
 
-        scrollable.addEventListener('scroll', function() {
-            if (scrollable.scrollTop > 200) {
-                scrollButton.classList.remove('hidden');
-            } else {
-                scrollButton.classList.add('hidden');
-            }
-        });
+    scrollable.addEventListener('scroll', function() {
+        if (scrollable.scrollTop > 200) {
+            scrollButton.classList.remove('hidden');
+        } else {
+            scrollButton.classList.add('hidden');
+        }
     });
 </script>

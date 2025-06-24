@@ -36,7 +36,8 @@ class ExamSelection extends Component
     }
 
     public function setSelectedExam(Exam $exam) {
-       $this->selectedExam = $exam;
+    //    $this->selectedExam = $exam;
+        return $this->redirect(route("exam-participate", ["exam" => $exam->id]), navigate: true);
     }
 
     public function render()

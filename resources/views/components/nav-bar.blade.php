@@ -18,9 +18,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span id="countdown" class="w-16">00:00:00</span>
-                <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    id="submitAnswersBtn">
+                <span id="sectionTimer" class="font-mono text-lg font-semibold">
+            {{ gmdate('i:s', 0) }}
+        </span>
+                <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="submitAnswersBtn"
+                    >
                     Submit
                 </button>
             </div>
@@ -52,13 +54,17 @@
                                         settings</a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('exam-results') }}" wire:navigate
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Exam Results</a>
+                                </li>
+                                {{-- <li>
                                     <a href="#"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Support</a>
                                 </li>
                                 <li>
                                     <a href="#"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">License</a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <form method="POST" action="{{route('logout')}}">
                                         @csrf
@@ -71,6 +77,7 @@
                         </div>
                     @else
                         <a href="{{ route('login') }}"
+                            wire:navigate
                             class="text-sm text-blue-500 font-medium hover:text-red-600 transition-colors border-r md:border-r-0 md:border-l border-gray-400 px-3">
                             Sign in</a>
                     @endauth
@@ -89,6 +96,15 @@
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 me-5" id="navbar-user">
                 <ul
                     class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    {{-- <li class="border-b md:border-0">
+                        <a href="#"
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Account
+                                        settings</a>
+                    </li>
+                    <li class="border-b md:border-0">
+                        <a href="{{ route('exam-results') }}" wire:navigate
+                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Exam Results</a>
+                    </li> --}}
                     <li class="border-b md:border-0">
                         <a href="#"
                             class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About

@@ -3,10 +3,14 @@
 @section('content')
     <main class="flex-1">
         <section
-            class="w-full 2xl:w-4/5 2xl:mx-auto 2xl:rounded-b-lg py-12 md:py-24 lg:py-32 bg-[url('http://127.0.0.1:8000/assets/images/japan-wallpaper.jpg')] bg-cover bg-center">
+            class="w-full 2xl:w-4/5 2xl:mx-auto 2xl:rounded-b-lg py-12 md:py-24 lg:py-32 bg-[url('{{ config('app.url') }}/assets/images/japan-wallpaper.jpg')] bg-cover bg-center">
             <div class="container px-4 md:px-6 mx-auto">
                 <div class="flex flex-col items-center space-y-4 text-center">
-                    <div class="space-y-2 text-white drop-shadow-[0_3px_3px_rgba(44,62,80,0.75)]">
+                    <div class="space-y-2 text-white drop-shadow-[0_3px_3px_rgba(44,62,80,0.75)] animate-fade-in">
+                        <p
+                            class="text-lg text-white/90 font-medium mb-4 bg-black/20 inline-block px-4 py-2 rounded-lg transform hover:scale-105 transition-transform duration-200">
+                            ✓ Realistic Practice Tests ✓ Instant Feedback ✓ Proven Results
+                        </p>
                         <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none ">
                             Master the JLPT with Confidence
                         </h1>
@@ -16,9 +20,14 @@
                         </p>
                     </div>
                     <div class="space-x-4">
-                        <button class="bg-red-600 hover:bg-red-700 text-white rounded-lg px-5 py-2">Get Started</button>
-                        <button variant="outline" class="bg-white text-red-600 hover:bg-red-50 rounded-lg px-5 py-2">Learn
-                            More</button>
+                        <a href="/exams"
+                            class="bg-red-600 hover:bg-red-700 text-white rounded-lg px-6 py-3 font-semibold transition-colors duration-200 shadow-lg">
+                            Get Started
+                        </a>
+                        <button
+                            class="bg-white/90 backdrop-blur-sm text-red-600 hover:bg-white hover:text-red-700 rounded-lg px-6 py-3 font-semibold transition-all duration-200 shadow-lg border border-white/20">
+                            Learn More
+                        </button>
                     </div>
                 </div>
             </div>
@@ -30,7 +39,7 @@
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-5" x-data="{ levels: ['N5', 'N4', 'N3', 'N2', 'N1'] }">
                     <template x-for="level in ['N5', 'N4', 'N3', 'N2', 'N1']" :key="level">
                         <a x-bind:href="'/exams?selectedLevel=' +
-                        level" x-text="level"
+                                    level" x-text="level"
                             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background hover:text-accent-foreground px-4 py-2 h-32 text-2xl font-bold border-2 border-red-200 hover:border-red-600 hover:bg-red-50 transition-colors">
                         </a>
                     </template>
@@ -80,19 +89,36 @@
                     <div class="space-y-2">
                         <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">Ready to Start Your JLPT
                             Journey?</h2>
-                        <p class="max-w-[600px] text-gray-600 md:text-xl">
+                        {{-- <p class="max-w-[600px] text-gray-600 md:text-xl">
                             Join thousands of successful students who have passed their JLPT exams with our platform.
+                        </p> --}}
+                        <p class="max-w-[600px] text-gray-600 md:text-xl">
+                            Join to be a successful student who have passed their JLPT exams with our platform.
                         </p>
                     </div>
                     <div class="w-full max-w-sm space-y-2">
-                        <form class="flex space-x-2">
-                            <input
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:border-gray-500 focus:ring-gray-500 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex-1"
-                                placeholder="Enter your email" type="email" />
-                            <button type="submit"
-                                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 bg-red-600 hover:bg-red-700 text-white">Sign
-                                Up</button>
-                        </form>
+                        <form
+    x-data="{ email: '' }"
+    @submit.prevent="
+        if (email) {
+            window.location.href = '{{ route('register') }}' + '?email=' + encodeURIComponent(email);
+        }
+    "
+    class="flex space-x-2"
+>
+    <input
+        x-model="email"
+        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:border-gray-500 focus:ring-gray-500 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex-1"
+        placeholder="Enter your email"
+        type="email"
+        required
+    />
+    <button type="submit"
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 bg-red-600 hover:bg-red-700 text-white">
+        Sign Up
+    </button>
+</form>
+
                     </div>
                 </div>
             </div>

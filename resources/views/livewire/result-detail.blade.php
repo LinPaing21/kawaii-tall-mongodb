@@ -30,9 +30,12 @@
 @endsection --}}
 
 {{-- <div class="max-w-4xl mx-auto text-gray-900 dark:text-gray-100 p-5" id="content-scrollable"> --}}
-    <div class="overflow-y-auto" id="content-scrollable">
 
+    <div class="overflow-y-auto" id="content-scrollable">
         <div class="max-w-4xl mx-auto text-gray-900 dark:text-gray-100 p-5">
+            @if (!str_contains(request()->url(), '/admin') && url()->previous() !== request()->fullUrl())
+                <x-utilities.back-btn />
+            @endif
             <h1 class="text-2xl font-bold mb-4 text-center">Exam Result Details</h1>
             <div class="flex flex-wrap gap-2 mb-4 justify-center">
                 @foreach ($examResults as $section)

@@ -1,7 +1,7 @@
 @props(['options', 'id', 'selected'])
 <div>
     <button id="{{ $id }}Button" data-dropdown-toggle="{{ $id }}"
-        class="flex items-center justify-between rounded-md border border-input border-gray-300 bg-gray-50 p-3 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 w-[180px]"
+        class="flex items-center justify-between rounded-md border border-input border-gray-300 bg-gray-50 p-3 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 w-[150px] md:w-[180px]"
         type="button">{{ $selected ?? $options[0] }} <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

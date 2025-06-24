@@ -10,7 +10,7 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/filament/admin/theme.css', 'resources/js/audio.js'],
+            input: ['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/filament/admin/theme.css', 'resources/js/audio.js', 'resources/js/exam-tracker.js'],
             refresh: true,
         }),
     ],
