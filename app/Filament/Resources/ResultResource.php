@@ -37,7 +37,7 @@ class ResultResource extends Resource
                 Tables\Columns\TextColumn::make('exam.year')->label('Exam Year')->date('M Y')->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->label('User Name'),
                 Tables\Columns\TextColumn::make('results')->label('Total Score')->getStateUsing(
-                    fn($record, ResultService $resultService) => $resultService->getTotalScore($record->results) . '/' . $resultService->getTotalQuestions($record->results)
+                    fn($record, ResultService $resultService) => $resultService->getTotalScore($record->results) . '/' . $resultService->getTotalMaxScore($record->results)
                 ),
                 Tables\Columns\IconColumn::make('status')
                     ->label('Status')

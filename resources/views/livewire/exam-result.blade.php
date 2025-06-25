@@ -3,35 +3,6 @@
 
     <!-- Encouraging Results Header -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        @php
-            $encouragingMessage = match (true) {
-                $overAllPercentage >= 60 => [
-                    'status' => 'Congratulations! 🎉',
-                    'message' => 'You passed! You\'re ready for the real JLPT exam!',
-                    'color' => 'green',
-                    'icon' => '🏆'
-                ],
-                $overAllPercentage >= 40 => [
-                    'status' => 'Almost There! 💪',
-                    'message' => 'You\'re making great progress. Just a little more practice!',
-                    'color' => 'yellow',
-                    'icon' => '⭐'
-                ],
-                $overAllPercentage >= 20 => [
-                    'status' => 'Keep Learning! 📚',
-                    'message' => 'Every expert was once a beginner. You\'re on the right path!',
-                    'color' => 'orange',
-                    'icon' => '🌱'
-                ],
-                default => [
-                    'status' => 'Great Start! 🚀',
-                    'message' => 'Everyone starts somewhere. Let\'s build your foundation together!',
-                    'color' => 'blue',
-                    'icon' => '💡'
-                ]
-            };
-        @endphp
-
         <!-- Mobile-First Responsive Design -->
         <div class="mb-6">
             <!-- Mobile Layout -->
@@ -131,10 +102,10 @@
                 </svg>
                 <span>Total Questions: {{ $totalQuestions }}</span>
             </div>
-            <div class="flex items-center">
+            {{-- <div class="flex items-center">
                 <i class="fa-regular fa-star h-4 w-4 mr-2"></i>
                 <span>Scores: {{ $totalScore }} / {{ $totalQuestions }}</span>
-            </div>
+            </div> --}}
             <div class="flex items-center">
                 <i class="fa-solid fa-square-check h-4 w-4 mr-2" style="color: #1d775c;"></i>
                 <span>Points: ~ {{ $totalPoints }} / 180</span>
