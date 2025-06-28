@@ -37,15 +37,18 @@ class ExamParticipate extends Component
 
         foreach ($this->exam->exam_sections as $section) {
             $answers = [];
+            $questionNos = [];
             foreach ($section['problems'] as $problem) {
                 foreach ($problem['questions'] as $q) {
                     $answers[] = '-';
+                    $questionNos[] = $problem['set'] . '-' . $q['no'];
                 }
             }
             $this->examSelections[] = [
                 "id" => $section['id'],
                 "title" => $section['title'],
-                "answers" => $answers
+                "answers" => $answers,
+                "questionNos" => $questionNos
             ];
         }
 

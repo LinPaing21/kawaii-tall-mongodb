@@ -32,7 +32,7 @@
                     <div class="grid grid-cols-8 gap-px bg-gray-200 dark:bg-gray-600 text-sm">
                         @foreach ($section['answers'] as $index => $answer)
                             @php
-                                $questionNumber = $index + 1;
+                                $questionNumber = data_get($section, "questionNos.$index", 0);
                                 $isGray = floor($index / 8) % 2 === 0;
                             @endphp
 
@@ -43,7 +43,7 @@
                                 {{ $this->canAccessSection($sectionIndex) ? 'hover:bg-red-50 dark:hover:bg-red-900/20' : '' }}
                                 {{ $isGray ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-900' }}"
                                 {{ !$this->canAccessSection($sectionIndex) ? 'disabled' : '' }}>
-                                <span class="font-medium">{{ $questionNumber }}</span>
+                                <span class="font-medium">{{ @explode('-', $questionNumber)[1] ?? 'NaN' }}</span>
                                 <span class="text-xs text-gray-600 dark:text-gray-400">{{ $answer }}</span>
                             </button>
                         @endforeach

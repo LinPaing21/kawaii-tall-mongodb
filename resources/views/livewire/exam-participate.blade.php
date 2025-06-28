@@ -37,6 +37,7 @@
         <div class="p-4 h-full flex flex-col" x-data="{
             icons: {
                 'vocabulary': `<i class='w-10 h-10 fa-solid fa-book-open'></i>`,
+                'language_knowledge': `<i class='w-10 h-10 fa-solid fa-book-open'></i>`,
                 'grammar': `<i class='w-10 h-10 fa-solid fa-pen-nib'></i>`,
                 'grammar_reading': `<i class='w-10 h-10 fa-solid fa-pen-nib'></i>`,
                 'reading': `<i class='w-10 h-10 fa-regular fa-file-line'></i>`,
@@ -209,7 +210,7 @@
 
                     </div>
                     @foreach ($problem['questions'] as $question)
-                        <div class=" p-3 rounded-lg mb-6" id="{{ $selectedSection['id'] . '-' . $question['no'] }}">
+                        <div class=" p-3 rounded-lg mb-6" id="{{ $selectedSection['id'] . '-' . $problem['set'] . '-' . $question['no'] }}">
                             <p class="mb-4">
                                 @if (mb_strlen($question['question']) > 50 && $selectedSection['id'] != 'listening')
                                     {{-- {!! $question['question'] !!} <br><br> ({{ $question['no'] }}) --}}
@@ -313,7 +314,7 @@
     document.querySelector('#submitAnswersBtn').addEventListener('click', function () {
         console.log('Submit button clicked');
         Swal.fire({
-            title: 'Are you sure?',
+            title: 'Be sure answer all sections!',
             text: "You won't be able to change your answers after submitting!",
             icon: 'warning',
             showCancelButton: true,

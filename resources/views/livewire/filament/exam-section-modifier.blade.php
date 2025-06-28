@@ -1,6 +1,6 @@
 <div>
     {{-- <button type="button" wire:click="handleSave">Save</button> --}}
-    <div class="mx-auto bg-gray-100 dark:bg-gray-800 p-5 text-gray-900 dark:text-gray-100">
+    <div class="mx-auto bg-gray-100 dark:bg-gray-800 p-5 text-gray-900 dark:text-gray-100" wire:key="page-{{ $page }}">
         <div class="flex justify-between mb-3">
             <button type="button" wire:click="handlePrevious"
                 class="px-4 py-1 flex text-gray-900 dark:text-white rounded-lg hover:text-blue-400 dark:hover:text-blue-400">
@@ -32,7 +32,7 @@
             $qIndex = 0;
         @endphp
         @foreach ($examSections[$page - 1]['problems'] as $problem)
-            <div>
+            <div wire:key="problem-{{ $page }}-{{ $loop->index }}">
                 <hr class="my-5 border-gray-300 dark:border-gray-500">
                 <h6 class="font-bold grid grid-cols-5 gap-3">
                     <input type="text" class="border p-2 bg-white dark:bg-gray-700 dark:border-gray-500"
@@ -49,7 +49,7 @@
                         placeholder="Example Question">
                     <ul class="flex gap-8">
                         @foreach ($problem['example']['options'] as $e_option)
-                            <li>
+                            <li wire:key="example-option-{{ $page }}-{{ $loop->parent->index }}-{{ $loop->index }}">
                                 <input type="text" class="border p-2 bg-white dark:bg-gray-700 dark:border-gray-500"
                                     wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->index }}.example.options.{{ $loop->index }}.body"
                                     placeholder="Option Text">
@@ -67,23 +67,25 @@
             </div>
             @foreach ($problem['questions'] as $question)
                 <div class="p-3 rounded-lg mb-6 bg-gray-100 dark:bg-gray-700"
-                    id="{{ $examSections[0]['id'] . '-' . $question['no'] }}">
+                    id="{{ $examSections[0]['id'] . '-' . $question['no'] }}" wire:key="question-{{ $page }}-{{ $loop->parent->index }}-{{ $loop->index }}">
                     <p class="p-2 mb-2 bg-white dark:bg-gray-700">{!! $question['question'] !!}</p>
                     <input type="text" class="mb-4 border p-2 w-full bg-white dark:bg-gray-700 dark:border-gray-500"
                         wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->index }}.questions.{{ $loop->index }}.question"
                         placeholder="Question">
                     <div class="space-y-2">
                         @foreach ($question['options'] as $option)
-                            <input type="text"
-                                class="w-full text-left px-4 py-2 border rounded-md bg-white dark:bg-gray-700 dark:border-gray-500"
-                                wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->parent->index }}.questions.{{ $loop->parent->index }}.options.{{ $loop->index }}.body"
-                                placeholder="Option Text">
-                            <label class="flex items-center gap-1">
-                                <input type="checkbox"
-                                    wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->parent->index }}.questions.{{ $loop->parent->index }}.options.{{ $loop->index }}.is_correct"
-                                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
-                                Correct
-                            </label>
+                            <div wire:key="option-{{ $page }}-{{ $loop->parent->parent->index }}-{{ $loop->parent->index }}-{{ $loop->index }}">
+                                <input type="text"
+                                    class="w-full text-left px-4 py-2 border rounded-md bg-white dark:bg-gray-700 dark:border-gray-500"
+                                    wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->parent->index }}.questions.{{ $loop->parent->index }}.options.{{ $loop->index }}.body"
+                                    placeholder="Option Text">
+                                <label class="flex items-center gap-1">
+                                    <input type="checkbox"
+                                        wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->parent->index }}.questions.{{ $loop->parent->index }}.options.{{ $loop->index }}.is_correct"
+                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                                    Correct
+                                </label>
+                            </div>
                         @endforeach
                     </div>
                 </div>
