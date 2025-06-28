@@ -18,6 +18,17 @@
     box-shadow: none;
 }
 
+@layer base {
+    table {
+        @apply border-collapse border border-black;
+    }
+
+    th,
+    td {
+        @apply border border-black p-2;
+    }
+}
+
 /**
  * This injects any component classes registered by plugins.
  */
