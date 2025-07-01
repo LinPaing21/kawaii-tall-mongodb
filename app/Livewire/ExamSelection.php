@@ -45,7 +45,7 @@ class ExamSelection extends Component
         $filters = [ 'search' => $this->search, 'year' => $this->selectedYear, 'level' => $this->selectedLevel ];
 
         return view('livewire.exam-selection', [
-            'exams' => Exam::filter($filters)->orderBy('year', 'DESC')->paginate(12)
+            'exams' => Exam::filter($filters)->where('active', 1)->orderBy('year', 'DESC')->paginate(12)
         ]);
     }
 
