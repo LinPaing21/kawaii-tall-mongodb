@@ -24,6 +24,18 @@
             pointer-events: none;
             height: 8px;
         }
+
+        hr {
+            border-color: black;
+        }
+
+        .whitespace-pre-wrap ~ .border {
+            border-color: black;
+        }
+
+        .whitespace-pre-wrap ~ * .border {
+            border-color: black;
+        }
     </style>
 @endsection
 @section('custom-footer')
@@ -185,15 +197,15 @@
                     <div>
                         <hr class="my-5">
 
-                        <h6 class="font-bold grid grid-cols-5 gap-3">
+                        <h6 class="font-bold grid grid-cols-5 gap-3 p-2 mb-2 whitespace-pre-wrap">
                             <span class="">もんだい {{ $problem['set'] }}</span>
-                            <span class="col-span-4">{!! $problem['problem'] !!}</span>
+                            <span class="col-span-4 ">{!! $problem['problem'] !!}</span>
                         </h6>
 
                         <hr class="my-5">
 
                         @isset($problem['example'])
-                            <p class="mb-2">(れい) {!! $problem['example']['question'] !!}</p>
+                            <p class="mb-2 whitespace-pre-wrap p-2">(れい) {!! $problem['example']['question'] !!}</p>
                             <ul class="flex gap-8">
                                 @foreach ($problem['example']['options'] as $e_option)
                                     <li>
@@ -211,15 +223,7 @@
                     </div>
                     @foreach ($problem['questions'] as $question)
                         <div class=" p-3 rounded-lg mb-6" id="{{ $selectedSection['id'] . '-' . $problem['set'] . '-' . $question['no'] }}">
-                            <p class="mb-4">
-                                @if (mb_strlen($question['question']) > 50 && $selectedSection['id'] != 'listening')
-                                    {{-- {!! $question['question'] !!} <br><br> ({{ $question['no'] }}) --}}
-                                    {!! $question['question'] !!}
-                                @else
-                                    {{-- ({{ $question['no'] }}) --}}
-                                    {!! $question['question'] !!}
-                                @endif
-                            </p>
+                            <p class="mb-4 whitespace-pre-wrap p-2">{!! $question['question'] !!}</p>
                             <div class="space-y-2">
                                 @foreach ($question['options'] as $option)
                                     <button

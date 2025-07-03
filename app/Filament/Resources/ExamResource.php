@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\Actions\Action;
 use App\Filament\Resources\ExamResource\Pages;
 use App\Filament\Resources\ExamResource\Traits\ExamSection;
@@ -64,7 +65,7 @@ class ExamResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Name'),
-                Tables\Columns\TextColumn::make('level')->label('Level'),
+                Tables\Columns\TextColumn::make('level')->label('Level')->sortable(),
                 Tables\Columns\TextColumn::make('year')->label('Year')
                     ->date()
                     ->sortable(),
@@ -79,6 +80,7 @@ class ExamResource extends Resource
                     ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                ToggleColumn::make('active')
             ])
             ->filters([
                 //

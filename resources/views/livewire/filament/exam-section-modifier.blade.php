@@ -34,6 +34,10 @@
         @foreach ($examSections[$page - 1]['problems'] as $problem)
             <div wire:key="problem-{{ $page }}-{{ $loop->index }}">
                 <hr class="my-5 border-gray-300 dark:border-gray-500">
+                <h6 class="font-bold grid grid-cols-5 gap-3 p-2 mb-2 whitespace-pre-wrap">
+                    <span class="">もんだい {{ $problem['set'] }}</span>
+                    <span class="col-span-4 ">{!! $problem['problem'] !!}</span>
+                </h6>
                 <h6 class="font-bold grid grid-cols-5 gap-3">
                     <input type="text" class="border p-2 bg-white dark:bg-gray-700 dark:border-gray-500"
                         wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->index }}.set" placeholder="Problem Set">
@@ -43,7 +47,7 @@
                 </h6>
                 <hr class="my-5 border-gray-300 dark:border-gray-500">
                 @isset($problem['example'])
-                    <p class="p-2 mb-2 bg-white dark:bg-gray-700">{!! $problem['example']['question'] !!}</p>
+                    <p class="p-2 mb-2 bg-white dark:bg-gray-700 whitespace-pre-wrap">{!! $problem['example']['question'] !!}</p>
                     <input type="text" class="mb-2 border p-2 w-full bg-white dark:bg-gray-700 dark:border-gray-500"
                         wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->index }}.example.question"
                         placeholder="Example Question">
@@ -68,13 +72,14 @@
             @foreach ($problem['questions'] as $question)
                 <div class="p-3 rounded-lg mb-6 bg-gray-100 dark:bg-gray-700"
                     id="{{ $examSections[0]['id'] . '-' . $question['no'] }}" wire:key="question-{{ $page }}-{{ $loop->parent->index }}-{{ $loop->index }}">
-                    <p class="p-2 mb-2 bg-white dark:bg-gray-700">{!! $question['question'] !!}</p>
+                    <p class="p-2 mb-2 bg-white dark:bg-gray-700 whitespace-pre-wrap">{!! $question['question'] !!}</p>
                     <input type="text" class="mb-4 border p-2 w-full bg-white dark:bg-gray-700 dark:border-gray-500"
                         wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->index }}.questions.{{ $loop->index }}.question"
                         placeholder="Question">
                     <div class="space-y-2">
                         @foreach ($question['options'] as $option)
                             <div wire:key="option-{{ $page }}-{{ $loop->parent->parent->index }}-{{ $loop->parent->index }}-{{ $loop->index }}">
+                                <p class="p-2 mb-2 bg-white dark:bg-gray-700 whitespace-pre-wrap">{!! $option['body'] !!}</p>
                                 <input type="text"
                                     class="w-full text-left px-4 py-2 border rounded-md bg-white dark:bg-gray-700 dark:border-gray-500"
                                     wire:model="examSections.{{ $page - 1 }}.problems.{{ $loop->parent->parent->index }}.questions.{{ $loop->parent->index }}.options.{{ $loop->index }}.body"

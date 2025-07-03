@@ -31,6 +31,7 @@ class CreateExam extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $this->data['audio_url'] = Storage::disk('s3')->url(reset($this->data['audio_file']));
+        $this->data['active'] = false;
         return Arr::except($this->data, ['audio_file']);
     }
 }

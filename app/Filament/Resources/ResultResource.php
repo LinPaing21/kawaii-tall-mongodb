@@ -33,7 +33,7 @@ class ResultResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('exam.name')->label('Exam Name'),
-                Tables\Columns\TextColumn::make('exam.level')->label('Exam Level'),
+                Tables\Columns\TextColumn::make('exam.level')->label('Exam Level')->sortable(),
                 Tables\Columns\TextColumn::make('exam.year')->label('Exam Year')->date('M Y')->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->label('User Name'),
                 Tables\Columns\TextColumn::make('results')->label('Total Score')->getStateUsing(
