@@ -41,30 +41,24 @@ class ResultHistory extends Component
             ->paginate(10);
 
 
-        $totalScoreAggregate = Result::where('user_id', auth()->id())->raw(function ($collection) {
+        $totalScoreAggregate = Result::raw(function ($collection) {
             return $collection->aggregate([
                 [
                     '$project' => [
+                        'user_id' => 1,
                         'total_score' => ['$sum' => '$results.score'],
-                        'total_questions' => [
-                            '$sum' => [
-                                '$map' => [
-                                    'input' => '$results',
-                                    'as' => 'r',
-                                    'in' => ['$size' => '$$r.answers']
-                                ]
-                            ]
-                        ]
+                        'total_max_score' => ['$sum' => '$results.max_score']
                     ]
                 ],
                 [
                     '$project' => [
+                        'user_id' => 1,
                         'total_score' => 1,
-                        'total_questions' => 1,
+                        'total_max_score' => 1,
                         'overAllPercentage' => [
                             '$round' => [
                                 '$multiply' => [
-                                    ['$divide' => ['$total_score', '$total_questions']],
+                                    ['$divide' => ['$total_score', '$total_max_score']],
                                     100
                                 ]
                             ]
@@ -72,7 +66,7 @@ class ResultHistory extends Component
                     ]
                 ]
             ]);
-        });
+        })->where('user_id', auth()->id());
 
         // dd($totalScoreAggregate);
         // Calculate stats
