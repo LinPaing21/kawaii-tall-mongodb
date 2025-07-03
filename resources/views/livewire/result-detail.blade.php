@@ -77,16 +77,16 @@
                     @endif
 
                     @foreach ($section['problems'] as $problem)
-                        <h4 class="text-lg italic mt-6 mb-3">{{ $problem['set'] . '. ' . $problem['problem'] }}</h4>
+                        <h4 class="text-lg italic mt-6 mb-3 whitespace-pre-wrap">{{ $problem['set'] . '. ' . $problem['problem'] }}</h4>
                         @foreach ($problem['questions'] as $question)
                             <div class="p-3 rounded-lg mb-4 bg-black/30 backdrop-blur-md border border-gray-700/50 text-white shadow-lg"
                                 :class="{ 'dark:bg-red-500/20 bg-red-800/50': '{{!isset($question['selected']) || !optional(collect($question['options'])->where('no', $question['selected'])->first())['is_correct']}}' }">
-                                <p class="font-semibold">Q{{ $question['no'] }}: {!! $question['question'] !!}</p>
+                                <p class="font-semibold whitespace-pre-wrap">Q{{ $question['no'] }}: {!! $question['question'] !!}</p>
                                 <ul class="mt-2 space-y-2">
                                     @foreach ($question['options'] as $option)
                                         <li class="flex items-center px-2"
                                             :class="{'bg-blue-400/80 dark:bg-blue-400/40': '{{ @$question['selected'] == $option['no'] }}'}">
-                                            <span class="mr-2">{{ $option['no'] }}. {{ $option['body'] }}</span>
+                                            <span class="mr-2">{{ $option['no'] }}. {!! $option['body'] !!}</span>
                                             @if ($option['is_correct'])
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75"
                                                     stroke="currentColor" class="w-6 h-6 text-green-500">

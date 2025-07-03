@@ -210,7 +210,7 @@
                                 @foreach ($problem['example']['options'] as $e_option)
                                     <li>
                                         {{-- {{ $e_option['no'] . '.  ' . $e_option['body'] }} --}}
-                                        {{ $e_option['body'] }}
+                                        {!! $e_option['body'] !!}
                                         @if ($e_option['is_correct'])
                                             <i class="w-4 h-4 fa-regular fa-circle-check" style="color: #36d372;"></i>
                                         @endif
@@ -231,7 +231,7 @@
                                         wire:click="selectAnswer('{{ $selectedSection['id'] }}',{{ $qIndex }}, {{ $option['no'] }})"
                                         :class="{ 'bg-blue-100 outline-none ring-2 ring-blue-500 ring-opacity-50': '{{ $examSelections->where('title', $selectedSection['title'])->first()['answers'][$qIndex] == $option['no'] }}' }">
                                         {{-- {{ $option['no'] . '.  ' . $option['body'] }} --}}
-                                        {{ $option['body'] }}
+                                        {!! $option['body'] !!}
                                     </button>
                                 @endforeach
                             </div>
