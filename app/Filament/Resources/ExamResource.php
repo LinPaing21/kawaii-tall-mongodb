@@ -70,6 +70,7 @@ class ExamResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
+                    ->searchable()
                     ->label('Description')
                     ->limit(40),
                 Tables\Columns\TextColumn::make('created_at')
@@ -83,7 +84,15 @@ class ExamResource extends Resource
                 ToggleColumn::make('active')
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('level')
+                    ->multiple()
+                    ->options([
+                        'N1' => 'N1',
+                        'N2'    => 'N2',
+                        'N3'    => 'N3',
+                        'N4'    => 'N4',
+                        'N5'    => 'N5',
+                    ])
             ])
             ->defaultSort('year', 'desc')
             ->actions([

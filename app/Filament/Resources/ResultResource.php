@@ -33,7 +33,7 @@ class ResultResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('exam.name')->label('Exam Name'),
-                Tables\Columns\TextColumn::make('exam.level')->label('Exam Level')->sortable(),
+                Tables\Columns\TextColumn::make('exam.level')->label('Exam Level')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('exam.year')->label('Exam Year')->date('M Y')->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->label('User Name'),
                 Tables\Columns\TextColumn::make('results')->label('Total Score')->getStateUsing(
@@ -59,7 +59,18 @@ class ResultResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Tables\Filters\SelectFilter::make('level')
+                // ->
+                //     // ->relationship('exam', 'level')
+                //     // ->preload()
+                //     ->multiple()
+                //     ->options([
+                //         'N1' => 'N1',
+                //         'N2' => 'N2',
+                //         'N3' => 'N3',
+                //         'N4' => 'N4',
+                //         'N5' => 'N5',
+                //     ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

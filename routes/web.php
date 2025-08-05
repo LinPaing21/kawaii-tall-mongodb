@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Auth\Login;
+use App\Livewire\ContactUs;
 use App\Livewire\ExamResult;
 use App\Livewire\Auth\Verify;
 use App\Livewire\ResultDetail;
@@ -33,6 +34,7 @@ Route::get('exams/{exam}', ExamParticipate::class)->name('exam-participate');
 Route::get('results', ResultHistory::class)->middleware('auth')->name('exam-results');
 Route::get('results/{result}', ExamResult::class)->name('exam-result');
 Route::get('results/{result}/detail', ResultDetail::class)->name('exam-result-detail');
+Route::get('contact-us', ContactUs::class)->name('contact-us');
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
