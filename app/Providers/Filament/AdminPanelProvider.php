@@ -46,6 +46,9 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                \App\Filament\Resources\UserResource\Widgets\UsersChart::class,
+                \App\Filament\Resources\ResultResource\Widgets\JLPTLevelYearChart::class,
+                \App\Filament\Resources\DonationResource\Widgets\DonationChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

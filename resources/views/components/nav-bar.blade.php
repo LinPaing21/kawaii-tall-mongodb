@@ -4,12 +4,12 @@
 
 <nav class="sticky top-0 z-50 bg-white border-b border-red-100 dark:bg-gray-900">
     <div class="flex flex-wrap items-center justify-between px-4 py-4 lg:px-6">
-        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse grow">
-            <i class="fa-solid fa-book-open text-2xl text-red-600 dark:text-red-400"></i>
+        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <span class="text-2xl">🌸</span>
             <span
                 class="self-center text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-white">{{ config('app.name') }}</span>
         </a>
-
+        <span class="grow"></span>
         @if ($examParticipate)
             <div class="ml-auto flex items-center space-x-4">
 
@@ -27,7 +27,8 @@
                 </button>
             </div>
         @else
-            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <div class="flex items-center md:order-2 rtl:space-x-reverse">
+                {{-- <x-utilities.language_switcher class="md:me-2" /> --}}
                 @if (Route::has('login'))
                     @auth
                         <button type="button"
@@ -69,8 +70,8 @@
                                     <form method="POST" action="{{route('logout')}}">
                                         @csrf
                                         <button type="submit"
-                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
-                                            out</button>
+                                            class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                            {{__('general.sign_out')}}</button>
                                     </form>
                                 </li>
                             </ul>
@@ -79,11 +80,11 @@
                         <a href="{{ route('login') }}"
                             wire:navigate
                             class="text-sm text-blue-500 font-medium hover:text-red-600 transition-colors border-r md:border-r-0 md:border-l border-gray-400 px-3">
-                            Sign in</a>
+                            {{ __('general.sign_in') }}</a>
                     @endauth
                 @endif
                 <button data-collapse-toggle="navbar-user" type="button"
-                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    class="ml-3 inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-controls="navbar-user" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -105,22 +106,24 @@
                         <a href="{{ route('exam-results') }}" wire:navigate
                             class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Exam Results</a>
                     </li> --}}
-                    <li class="border-b md:border-0">
+
+                    <li class="">
                         <a href="https://www.jlpt.jp/e/about/index.html" target="blank"
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About
-                            JLPT</a>
+                            class="block text-end py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                            {{ __('general.about_jlpt') }}
+                        </a>
                     </li>
                     {{-- <li class="border-b md:border-0">
                         <a href="#"
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Resources</a>
+                            class="block text-end  py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Resources</a>
                     </li> --}}
                     <li>
                         <a href="{{ route('contact-us') }}" wire:navigate
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                            class="block text-end py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{{ __('general.contact') }}</a>
                     </li>
                     <li>
                         <a href="{{ route('support-us') }}" wire:navigate
-                            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Support</a>
+                            class="block text-end py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-600 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{{ __('general.support') }}</a>
                     </li>
                 </ul>
             </div>

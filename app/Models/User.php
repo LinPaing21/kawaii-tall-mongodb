@@ -4,12 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Result;
-use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasFactory, Notifiable;
 

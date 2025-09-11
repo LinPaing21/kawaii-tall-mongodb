@@ -28,7 +28,7 @@ services:
             - kawaii-network
 
     mongodb:
-        image: mongodb/mongodb-community-server:6.0-ubi8
+        image: mongodb/mongodb-community-server:7.0-ubi8
         container_name: kawaii-mongodb
         command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
         volumes:

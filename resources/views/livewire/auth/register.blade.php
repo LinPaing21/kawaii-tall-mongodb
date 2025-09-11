@@ -1,6 +1,6 @@
 @section('title', 'Create a new account')
 
-<div>
+<div class="">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <a href="{{ route('home') }}">
             <x-logo class="w-auto h-16 mx-auto text-indigo-600" />
@@ -18,7 +18,7 @@
         </p>
     </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-3 sm:px-0">
         <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             <form wire:submit.prevent="register">
                 <div>

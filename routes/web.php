@@ -30,6 +30,15 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 */
 
 Route::view('/', 'welcome')->name('home');
+// localization
+Route::get('locale/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'my', 'ja'])) {
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
+    }
+    return redirect()->back();
+})->name('set-locale');
+
 Route::get('exams', ExamSelection::class)->name('exam-selection');
 Route::get('exams/{exam}', ExamParticipate::class)->name('exam-participate');
 Route::get('results', ResultHistory::class)->middleware('auth')->name('exam-results');
