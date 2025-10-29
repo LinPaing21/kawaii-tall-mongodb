@@ -17,6 +17,10 @@ class Result extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'mode' => \App\Enums\ExamMode::class
+    ];
+
     /**
      * Get the user that owns the Result
      *

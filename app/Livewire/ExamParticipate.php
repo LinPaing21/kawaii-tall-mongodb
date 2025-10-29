@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Enums\ExamMode;
 use App\Models\Exam;
 use App\Models\Result;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 use App\Services\ResultService;
 
 class ExamParticipate extends Component
@@ -14,7 +16,8 @@ class ExamParticipate extends Component
     public $examSelections = [];
 
     // Add these properties for locked mode
-    public $examMode = 'restricted'; // 'restricted' or 'practice'
+    #[Url]
+    public ExamMode $examMode = ExamMode::RESTRICTED; // 'restricted' or 'practice'
     public $currentSectionIndex = 0;
     public $completedSections = [];
     public $sectionStartTime;
@@ -34,7 +37,6 @@ class ExamParticipate extends Component
     {
         $this->selectedSection = $this->exam->exam_sections[0];
         // $this->sectionStartTime = now();
-
         foreach ($this->exam->exam_sections as $section) {
             $answers = [];
             $questionNos = [];
@@ -123,12 +125,16 @@ class ExamParticipate extends Component
 
     public function canAccessSection($index)
     {
-        if ($this->examMode === 'practice') {
+        if ($this->examMode === ExamMode::PRACTICE) {
             return true;
         }
 
         // In restricted mode, only current section is accessible
         return $index === $this->currentSectionIndex;
+    }
+
+    public function isRestrictedMode() {
+        return $this->examMode === ExamMode::RESTRICTED;
     }
 
     public function isCurrentSection($index)
@@ -154,7 +160,7 @@ class ExamParticipate extends Component
     public function submit()
     {
         try {
-            $result = $this->resultService->saveResult($this->exam, $this->examSelections);
+            $result = $this->resultService->saveResult($this->exam, $this->examSelections, $this->examMode);
         } catch (\Throwable $th) {
             \Log::error($th->getMessage());
             return $this->dispatch('show-submit-error', [

@@ -27,7 +27,9 @@ class ResultHistory extends Component
 
     public function render()
     {
-        $results = Result::where('user_id', auth()->id())
+        $restrictedModeQuery = Result::where('user_id', auth()->id())
+            ->where('mode', \App\Enums\ExamMode::RESTRICTED);
+        $results = $restrictedModeQuery
             ->with(['exam'])
             ->when($this->selectedLevel !== 'all', function ($query) {
                 return $query->whereHas('exam', function ($q) {
@@ -71,8 +73,8 @@ class ResultHistory extends Component
         // dd($totalScoreAggregate);
         // Calculate stats
         $stats = [
-            'total' => Result::where('user_id', auth()->id())->count(),
-            'passed' => Result::where('user_id', auth()->id())->where('is_pass', true)->count(),
+            'total' => $restrictedModeQuery->count(),
+            'passed' => $restrictedModeQuery->where('is_pass', true)->count(),
             'average' => $totalScoreAggregate->avg('overAllPercentage') ?? 0,
             'best' => $totalScoreAggregate->max('overAllPercentage') ?? 0,
         ];

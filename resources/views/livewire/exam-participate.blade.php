@@ -117,41 +117,43 @@
             </button>
             <div class="w-1/2 ml-auto flex justify-between items-center">
         <!-- Previous Section (disabled in restricted mode) -->
-        <button
-            class="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed"
-            disabled>
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+        @if ($this->isRestrictedMode())
+            <button
+                class="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed"
+                disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
 
-        <!-- Section Progress -->
-        <div class="text-center">
-            <div class="text-sm text-gray-600 mb-1">
-                Section {{ $currentSectionIndex + 1 }} of {{ count($exam->exam_sections) }}
+            <!-- Section Progress -->
+            <div class="text-center">
+                <div class="text-sm text-gray-600 mb-1">
+                    Section {{ $currentSectionIndex + 1 }} of {{ count($exam->exam_sections) }}
+                </div>
+                {{-- <div class="text-lg font-semibold">{{ $selectedSection['title'] }}</div> --}}
             </div>
-            {{-- <div class="text-lg font-semibold">{{ $selectedSection['title'] }}</div> --}}
-        </div>
 
-        <!-- Next Section or Submit -->
-        {{-- @if($currentSectionIndex < count($exam->exam_sections) - 1)
+            <!-- Next Section or Submit -->
+            {{-- @if($currentSectionIndex < count($exam->exam_sections) - 1)
+                <button
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    id="nextSectionBtn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            @else
+                <button
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors submitAnswersBtn">
+                    Submit
+                    <i class="fa-solid fa-check"></i>
+                </button>
+            @endif --}}
             <button
-                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                id="nextSectionBtn">
-                <i class="fa-solid fa-chevron-right"></i>
+                    :disabled="{{ $currentSectionIndex >= count($exam->exam_sections) - 1 ? 'true' : 'false' }}"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    :class="{'bg-gray-300 hover:bg-gray-300 text-gray-500 cursor-not-allowed': {{ $currentSectionIndex >= count($exam->exam_sections) - 1 ? 'true' : 'false' }}}"
+                    id="nextSectionBtn">
+                    <i class="fa-solid fa-chevron-right"></i>
             </button>
-        @else
-            <button
-                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors submitAnswersBtn">
-                Submit
-                <i class="fa-solid fa-check"></i>
-            </button>
-        @endif --}}
-        <button
-                :disabled="{{ $currentSectionIndex >= count($exam->exam_sections) - 1 ? 'true' : 'false' }}"
-                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                :class="{'bg-gray-300 hover:bg-gray-300 text-gray-500 cursor-not-allowed': {{ $currentSectionIndex >= count($exam->exam_sections) - 1 ? 'true' : 'false' }}}"
-                id="nextSectionBtn">
-                <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        @endif
     </div>
         </div>
 
@@ -169,14 +171,16 @@
                                 class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                                 ▶ Start
                             </button>
-                            {{-- <button @click="pauseAudio()"
+                            @if (!$this->isRestrictedMode())
+                                <button @click="pauseAudio()"
                                 class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                                ⏸ Pause
-                            </button>
-                            <button @click="stopAudio()"
-                                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-                                ⏹ Stop
-                            </button> --}}
+                                    ⏸ Pause
+                                </button>
+                                <button @click="stopAudio()"
+                                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                    ⏹ Stop
+                                </button>
+                            @endif
                         </div>
 
                         <div class="flex items-center gap-2 mt-3">
@@ -184,7 +188,12 @@
                             {{-- <input id="progressBar" type="range" min="0" max="100" value="0" step="0.1"
                                 class="w-full cursor-pointer text-green-500" onchange="seekAudio(event)"> --}}
                             <input id="progressBar" type="range" min="0" max="100" value="0" step="0.1"
-                                class="w-full cursor-not-allowed text-green-500" readonly>
+                                class="w-full text-green-500 {{ $this->isRestrictedMode() ? 'cursor-not-allowed' : 'cursor-pointer' }}"
+                                @if ($this->isRestrictedMode())
+                                    readonly
+                                @else
+                                    onchange="seekAudio(event)"
+                                @endif>
                             <span id="duration" class="text-gray-700 text-sm w-12">0:00</span>
                         </div>
                     </div>
@@ -264,7 +273,7 @@
 
 @script
 <script defer>
-    document.querySelector('#nextSectionBtn').addEventListener('click', function () {
+    document.querySelector('#nextSectionBtn')?.addEventListener('click', function () {
             Swal.fire({
             title: 'Move to Next Section?',
             text: "You won't be able to return to this section once you proceed!",
@@ -282,7 +291,7 @@
         });
     });
 
-    document.querySelectorAll('[data-section][data-question]').forEach(button => {
+    document.querySelectorAll('[data-section][data-question]')?.forEach(button => {
         button.addEventListener('click', function () {
             const section = this.dataset.section;
             const question = this.dataset.question;
@@ -393,6 +402,7 @@
     }
 
     function startSectionTimer(duration) {
+        console.log('hola')
         sectionDuration = duration;
         clearInterval(sectionTimer);
         sectionTimer = setInterval(updateSectionTimer, 1000);
@@ -423,8 +433,11 @@
         }, 2000);
     });
 
-    // Start initial timer
-    startSectionTimer(sectionDuration);
+    if (await $wire.isRestrictedMode()) {
+        startSectionTimer(sectionDuration);
+    } else {
+        sectionTimerElement?.remove()
+    }
 </script>
 @endscript
 

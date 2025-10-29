@@ -24,6 +24,7 @@ class OptionalVerified
             'password/*',
             'email/verify*',
             'logout',
+            'livewire/*'
         ];
 
         if ($request->is($except)) {

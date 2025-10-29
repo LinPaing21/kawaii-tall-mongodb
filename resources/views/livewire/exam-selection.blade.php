@@ -1,6 +1,6 @@
 @section('title', 'Exam Selection')
 
-<main class="flex-1 container mx-auto px-4 py-4 sm:py-8">
+<main class="flex-1 container mx-auto px-4 py-4 sm:py-8" x-data="{ selectedExam: null}">
     <!-- Mobile-friendly title -->
     <h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Choose Your JLPT Exam</h1>
 
@@ -36,7 +36,8 @@
                 <div class="rounded-lg border bg-white py-6 sm:py-7 px-4 shadow-sm cursor-pointer transition-all hover:shadow-md"
                     x-bind:class="{ 'ring-2 ring-red-600 shadow-lg': '{{ $exam->id }}' == '{{ $selectedExam?->id }}' }"
                     @dblclick="window.location = '{{ route("exam-participate", ["exam" => $exam->id]) }}'"
-                    wire:click="setSelectedExam('{{ $exam->id }}')">
+                    @click='selectedExam = @json(["id"=>$exam->id, "level"=>$exam->level, "year"=>$exam->year->format("F Y")])'
+                    data-modal-target="mode-select-modal" data-modal-toggle="mode-select-modal">
                     <div class="header">
                         <h3 class="text-xl sm:text-2xl font-bold text-center mb-3 sm:mb-4">{{ $exam->level }}</h3>
                         <p class="text-sm sm:text-base text-center mb-3 sm:mb-4 text-gray-600">{{ $exam->year->format('F Y') }}
@@ -73,53 +74,37 @@
         </div>
     @endif
 
-    {{-- <!-- Mobile-optimized study materials section -->
-    @if ($selectedExam)
-        <div class="mt-6 sm:mt-8">
-            <h2 class="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
-                Study Materials for JLPT {{ $selectedExam->level }}
-                <span class="block sm:inline text-sm sm:text-base font-normal text-gray-600 mt-1 sm:mt-0">
-                    ({{ $selectedExam->year->format('F Y') }})
-                </span>
-            </h2>
+    <!-- Mobile-optimized study materials section -->
+        <div wire:ignore id="mode-select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 p-5">
+                {{-- @if ($selectedExam) --}}
+                        <h2 class="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
+                            JLPT <span x-text="selectedExam.level"></span>
+                            <span class="sm:inline text-sm sm:text-base font-normal text-gray-600 mt-1 sm:mt-0" x-text="selectedExam.year">
+                            </span>
+                        </h2>
 
-            <!-- Mobile: 2 columns, Desktop: 4 columns -->
-            <div class="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
-                <button
-                    class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <i class="fa-solid fa-graduation-cap text-lg sm:text-xl text-gray-600"></i>
-                    <span class="text-xs sm:text-sm text-center px-1">Lessons</span>
-                </button>
+                        <!-- Mobile: 2 columns, Desktop: 4 columns -->
+                        <div class="grid gap-3 sm:gap-4 grid-cols-2">
+                            <a :href="'{{ route('exam-participate', ['exam' => 'EXAM_ID', 'examMode' => \App\Enums\ExamMode::PRACTICE])}}'.replace('EXAM_ID', selectedExam.id)"
+                                class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                                <i class="fa-solid fa-file-lines text-lg sm:text-xl text-green-600"></i>
+                                <span class="text-xs sm:text-sm text-center px-1 text-green-700 font-medium">Start Test</span>
+                                <span class="text-xs text-green-600 block">(Pratice Mode)</span>
+                            </a>
 
-                <a href="{{ route('exam-participate', ['exam' => $selectedExam->id])}}"
-                    class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
-                    wire:navigate>
-                    <i class="fa-solid fa-file-lines text-lg sm:text-xl text-red-600"></i>
-                    <span class="text-xs sm:text-sm text-center px-1 text-red-700 font-medium">Practice Tests</span>
-                    <span class="text-xs text-red-600 hidden sm:block">(Restricted Mode)</span>
-                </a>
-
-                <button
-                    class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <i class="fa-solid fa-signal text-lg sm:text-xl text-gray-600"></i>
-                    <span class="text-xs sm:text-sm text-center px-1">Progress</span>
-                </button>
-
-                <button
-                    class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <i class="fa-solid fa-users text-lg sm:text-xl text-gray-600"></i>
-                    <span class="text-xs sm:text-sm text-center px-1">Community</span>
-                </button>
-            </div>
-
-            <!-- Mobile: Add prominent start button -->
-            <div class="mt-6 sm:hidden">
-                <a href="{{ route('exam-participate', ['exam' => $selectedExam->id])}}"
-                    class="block w-full bg-red-600 hover:bg-red-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors"
-                    wire:navigate>
-                    Start Practice Test
-                </a>
+                            <a :href="'{{ route('exam-participate', ['exam' => 'EXAM_ID'])}}'.replace('EXAM_ID', selectedExam.id)"
+                                class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+                                wire:navigate>
+                                <i class="fa-solid fa-file-lines text-lg sm:text-xl text-red-600"></i>
+                                <span class="text-xs sm:text-sm text-center px-1 text-red-700 font-medium">Start Test</span>
+                                <span class="text-xs text-red-600 block">(Restricted Mode)</span>
+                            </a>
+                        </div>
+                {{-- @endif --}}
+                </div>
             </div>
         </div>
-    @endif --}}
 </main>

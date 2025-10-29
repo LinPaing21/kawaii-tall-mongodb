@@ -43,13 +43,13 @@ function updateProgress() {
     const progressBar = document.getElementById("progressBar");
     const currentTimeEl = document.getElementById("currentTime");
 
-    if (window.sound && window.sound.playing()) {
+    // if (window.sound && window.sound.playing()) {
         const progress = (window.sound.seek() / window.sound.duration()) * 100;
         progressBar.value = progress;
         currentTimeEl.textContent = formatTime(window.sound.seek());
 
         requestAnimationFrame(updateProgress);
-    }
+    // }
 }
 
 // Update total duration when audio is loaded

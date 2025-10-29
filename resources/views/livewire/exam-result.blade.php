@@ -3,6 +3,12 @@
 
     <!-- Encouraging Results Header -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        @if($result->mode === \App\Enums\ExamMode::PRACTICE)
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" role="alert">
+                <p class="font-bold">Practice Mode</p>
+                <p>Results from practice mode are not saved in your result history.</p>
+            </div>
+        @endif
         <!-- Mobile-First Responsive Design -->
         <div class="mb-6">
             <!-- Mobile Layout -->

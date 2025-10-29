@@ -167,7 +167,7 @@ class ResultService
         }
     }
 
-    public function saveResult(Exam $exam, Collection $examSelections)
+    public function saveResult(Exam $exam, Collection $examSelections, \App\Enums\ExamMode $mode )
     {
         $sections = collect($exam->exam_sections);
 
@@ -196,7 +196,8 @@ class ResultService
         $data = [
             "exam_id" => $exam->id,
             "user_id" => auth()->user()?->id ?? 'test_user',
-            "results" => $examSelections->toArray()
+            "results" => $examSelections->toArray(),
+            "mode" => $mode
         ];
 
         $result = $this->resultRepo->create($data);

@@ -29,6 +29,11 @@
             </div>
         </div>
 
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" role="alert">
+            <p class="font-bold">Information</p>
+            <p>Results from practice mode exams are not saved in your result history.</p>
+        </div>
+
         <!-- Filters -->
         <div class="bg-white rounded-lg p-4 shadow-sm border mb-6">
             <div class="flex flex-col md:flex-row gap-4">
