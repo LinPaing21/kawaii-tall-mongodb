@@ -28,9 +28,24 @@ class ExamSelection extends Component
 
     public function mount()
     {
-        foreach (Exam::raw()->distinct('year') as $y) {
-            $this->years[] = $y->toDateTime()->format('Y');
-        }
+        $this->years = array_merge(
+            $this->years,
+            Exam::raw(function($collection) {
+                return $collection->aggregate([
+                    [
+                        '$project' => [
+                            'year' => ['$year' => '$year']
+                        ]
+                    ],
+                    [
+                        '$group' => ['_id' => '$year']
+                    ],
+                    [
+                        '$sort' => ['_id' => 1]
+                    ]
+                ]);
+            })->pluck('_id')->toArray()
+        );
 
         $this->difficultyLevels = array_merge($this->difficultyLevels, Exam::raw()->distinct('level'));
     }

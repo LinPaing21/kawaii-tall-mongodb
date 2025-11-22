@@ -81,21 +81,21 @@
                 <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 p-5">
                 {{-- @if ($selectedExam) --}}
                         <h2 class="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
-                            JLPT <span x-text="selectedExam.level"></span>
-                            <span class="sm:inline text-sm sm:text-base font-normal text-gray-600 mt-1 sm:mt-0" x-text="selectedExam.year">
+                            JLPT <span x-text="selectedExam?.level"></span>
+                            <span class="sm:inline text-sm sm:text-base font-normal text-gray-600 mt-1 sm:mt-0" x-text="selectedExam?.year">
                             </span>
                         </h2>
 
                         <!-- Mobile: 2 columns, Desktop: 4 columns -->
                         <div class="grid gap-3 sm:gap-4 grid-cols-2">
-                            <a :href="'{{ route('exam-participate', ['exam' => 'EXAM_ID', 'examMode' => \App\Enums\ExamMode::PRACTICE])}}'.replace('EXAM_ID', selectedExam.id)"
+                            <a :href="'{{ route('exam-participate', ['exam' => 'EXAM_ID', 'examMode' => \App\Enums\ExamMode::PRACTICE])}}'.replace('EXAM_ID', selectedExam?.id)"
                                 class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
                                 <i class="fa-solid fa-file-lines text-lg sm:text-xl text-green-600"></i>
                                 <span class="text-xs sm:text-sm text-center px-1 text-green-700 font-medium">Start Test</span>
                                 <span class="text-xs text-green-600 block">(Pratice Mode)</span>
                             </a>
 
-                            <a :href="'{{ route('exam-participate', ['exam' => 'EXAM_ID'])}}'.replace('EXAM_ID', selectedExam.id)"
+                            <a :href="'{{ route('exam-participate', ['exam' => 'EXAM_ID'])}}'.replace('EXAM_ID', selectedExam?.id)"
                                 class="h-20 sm:h-24 flex flex-col items-center justify-center space-y-1 sm:space-y-2 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
                                 wire:navigate>
                                 <i class="fa-solid fa-file-lines text-lg sm:text-xl text-red-600"></i>
