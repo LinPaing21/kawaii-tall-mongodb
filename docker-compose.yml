@@ -13,6 +13,8 @@ services:
             - mongodb
         networks:
             - kawaii-network
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
 
     nginx:
         image: nginx:alpine

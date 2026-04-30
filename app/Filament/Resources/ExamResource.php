@@ -48,8 +48,10 @@ class ExamResource extends Resource
                             ->tooltip('Generate Exam Sections')
                             ->action('generateExamSections')
                     ),
-                Textarea::make('description')
-                    ->label('Description'),
+                FileUpload::make('pdf_file')
+                    ->label('PDF File')
+                    // ->required(fn (string $context): bool => $context === 'create')
+                    ->acceptedFileTypes(['application/pdf']),
                 FileUpload::make('audio_file')
                     ->label('Audio File')
                     ->required(fn (string $context): bool => $context === 'create')
@@ -57,6 +59,8 @@ class ExamResource extends Resource
                     ->preserveFilenames()
                     ->acceptedFileTypes(['audio/mpeg', 'audio/mp3'])
                     ->disk('s3'),
+                Textarea::make('description')
+                    ->label('Description'),
             ]);
     }
 
@@ -103,7 +107,7 @@ class ExamResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);;
+            ]);
     }
 
     public static function getPages(): array
