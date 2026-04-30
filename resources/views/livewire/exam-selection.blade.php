@@ -1,4 +1,16 @@
-@section('title', 'Exam Selection')
+@section('title', 'Browse JLPT Exams')
+
+@push('meta')
+<meta name="description" content="Browse and filter JLPT practice exams by level (N1–N5) and year. Start a free mock test anytime, no registration required.">
+<meta property="og:title" content="Browse JLPT Exams – Kawaii JLPT">
+<meta property="og:description" content="Browse and filter JLPT practice exams by level (N1–N5) and year. Start a free mock test anytime.">
+<meta property="og:url" content="{{ url('/exams') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Browse JLPT Exams – Kawaii JLPT">
+<meta name="twitter:description" content="Browse and filter JLPT practice exams by level (N1–N5) and year. Start a free mock test anytime.">
+@endpush
 
 <main class="flex-1 container mx-auto px-4 py-4 sm:py-8" x-data="{ selectedExam: null}">
     <!-- Mobile-friendly title -->

@@ -1,4 +1,16 @@
-@section('title', 'Support Us - Kawaii JLPT')
+@section('title', 'Support Us')
+
+@push('meta')
+<meta name="description" content="Enjoy free JLPT practice exams? Support Kawaii JLPT to help keep the platform free and growing for Japanese learners worldwide.">
+<meta property="og:title" content="Support Kawaii JLPT – Help Us Stay Free">
+<meta property="og:description" content="Enjoy free JLPT practice exams? Support us to help keep the platform free and growing.">
+<meta property="og:url" content="{{ url('/support-us') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Support Kawaii JLPT – Help Us Stay Free">
+<meta name="twitter:description" content="Enjoy free JLPT practice exams? Support us to help keep the platform free and growing.">
+@endpush
 {{-- MAIN --}}
 <main class="container mx-auto px-4 py-8" x-data="{
         selectedAmount: @entangle('selectedAmount'),

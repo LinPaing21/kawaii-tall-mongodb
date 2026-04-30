@@ -1,4 +1,16 @@
-@section('title', 'Contact Us - Kawaii JLPT')
+@section('title', 'Contact Us')
+
+@push('meta')
+<meta name="description" content="Have questions or feedback about Kawaii JLPT? Get in touch with our team and we'll get back to you as soon as possible.">
+<meta property="og:title" content="Contact Us – Kawaii JLPT">
+<meta property="og:description" content="Have questions or feedback? Get in touch with the Kawaii JLPT team.">
+<meta property="og:url" content="{{ url('/contact-us') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Contact Us – Kawaii JLPT">
+<meta name="twitter:description" content="Have questions or feedback? Get in touch with the Kawaii JLPT team.">
+@endpush
 
 <div class="max-w-3xl mx-auto px-4 py-12">
     <!-- Header -->

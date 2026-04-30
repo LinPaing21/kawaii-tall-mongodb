@@ -1,6 +1,18 @@
 <!-- resources/views/livewire/exam-participate.blade.php -->
 
-@section('title', 'Exam Selection')
+@section('title', "JLPT {$exam->level} {$exam->year->format('Y')} Exam")
+
+@push('meta')
+<meta name="description" content="Take the JLPT {{ $exam->level }} {{ $exam->year->format('Y') }} practice exam online for free. Test your Japanese proficiency and review your answers.">
+<meta property="og:title" content="JLPT {{ $exam->level }} {{ $exam->year->format('Y') }} Practice Exam – Kawaii JLPT">
+<meta property="og:description" content="Take the JLPT {{ $exam->level }} {{ $exam->year->format('Y') }} practice exam online for free.">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JLPT {{ $exam->level }} {{ $exam->year->format('Y') }} Practice Exam – Kawaii JLPT">
+<meta name="twitter:description" content="Take the JLPT {{ $exam->level }} {{ $exam->year->format('Y') }} practice exam online for free.">
+@endpush
 @section('home-classes', 'h-screen')
 @section('custom-styles')
     <style>

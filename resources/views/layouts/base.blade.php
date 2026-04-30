@@ -10,6 +10,12 @@
         <title>{{ config('app.name') }}</title>
     @endif
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- SEO Meta Tags -->
+    @stack('meta')
+
     <!-- Favicon -->
     {{-- <link rel="shortcut icon" href="{{ url(asset('favicon.ico')) }}"> --}}
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon_io/apple-touch-icon.png">

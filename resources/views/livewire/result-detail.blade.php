@@ -1,4 +1,8 @@
 @section('title', 'Result Detail')
+
+@push('meta')
+<meta name="robots" content="noindex, nofollow">
+@endpush
 @section('home-classes', 'h-screen')
 @section('custom-footer')
     <p></p>

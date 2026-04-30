@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@push('meta')
+<meta name="description" content="Practice JLPT N1–N5 with free online mock exams. Track your scores, review answers, and improve your Japanese proficiency.">
+<meta property="og:title" content="Kawaii JLPT – Free JLPT Practice Exams N1 to N5">
+<meta property="og:description" content="Practice JLPT N1–N5 with free online mock exams. Track your scores, review answers, and improve your Japanese proficiency.">
+<meta property="og:url" content="{{ url('/') }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ config('app.name') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kawaii JLPT – Free JLPT Practice Exams N1 to N5">
+<meta name="twitter:description" content="Practice JLPT N1–N5 with free online mock exams. Track your scores and improve your Japanese proficiency.">
+@endpush
+
 @section('content')
     <main class="flex-1">
         <section

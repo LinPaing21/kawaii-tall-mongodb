@@ -1,5 +1,9 @@
 @section('title', 'Create a new account')
 
+@push('meta')
+<meta name="robots" content="noindex, nofollow">
+@endpush
+
 <div class="">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <a href="{{ route('home') }}">

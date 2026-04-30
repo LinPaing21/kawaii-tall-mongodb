@@ -1,5 +1,9 @@
 @section('title', 'Verify your email address')
 
+@push('meta')
+<meta name="robots" content="noindex, nofollow">
+@endpush
+
 <div>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <a href="{{ route('home') }}">

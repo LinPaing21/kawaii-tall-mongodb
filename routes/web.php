@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Exam;
 use App\Livewire\SupportUs;
 use App\Livewire\Auth\Login;
 use App\Livewire\ContactUs;
@@ -28,6 +29,45 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('robots.txt', function () {
+    $content = implode("\n", [
+        'User-agent: *',
+        'Disallow: /admin',
+        'Disallow: /login',
+        'Disallow: /register',
+        'Disallow: /password',
+        'Disallow: /email',
+        'Disallow: /results',
+        '',
+        'Sitemap: ' . url('/sitemap.xml'),
+    ]);
+
+    return response($content, 200)->header('Content-Type', 'text/plain');
+});
+
+Route::get('sitemap.xml', function () {
+    $exams = Exam::select(['_id', 'level', 'year'])->get();
+
+    $urls = collect([
+        ['loc' => url('/'),            'priority' => '1.0', 'changefreq' => 'weekly'],
+        ['loc' => url('/exams'),       'priority' => '0.9', 'changefreq' => 'weekly'],
+        ['loc' => url('/contact-us'),  'priority' => '0.5', 'changefreq' => 'yearly'],
+        ['loc' => url('/support-us'),  'priority' => '0.4', 'changefreq' => 'yearly'],
+    ]);
+
+    foreach ($exams as $exam) {
+        $urls->push([
+            'loc'        => url("/exams/{$exam->id}"),
+            'lastmod'    => $exam->updated_at?->toAtomString(),
+            'priority'   => '0.8',
+            'changefreq' => 'monthly',
+        ]);
+    }
+
+    return response()->view('sitemap', ['urls' => $urls])
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');
 
 Route::view('/', 'welcome')->name('home');
 // localization
